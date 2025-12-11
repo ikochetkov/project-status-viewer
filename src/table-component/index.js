@@ -147,7 +147,7 @@ const view = (state, {updateState}) => {
 									</div>
 									<div className="project-action">
 										{hasStatusReport(row.statusDate) ? (
-											<a href={`https://mobizitincdemo10.service-now.com/nav_to.do?uri=project_status.do?sys_id=${row.statusReportSysID}`} target="_blank" rel="noopener noreferrer" className="view-report-link">
+											<a href={`/nav_to.do?uri=project_status.do?sys_id=${row.statusReportSysID}`} target="_blank" rel="noopener noreferrer" className="view-report-link">
 												<span>📑</span>
 												<span>View Status Report - {row.statusReportNumber}</span>
 											</a>
