@@ -250,7 +250,7 @@ const view = (state, {updateState}) => {
 	);
 };
 
-createCustomElement('x-mobit-table-component', {
+createCustomElement('x-mobit-status-report-viewer', {
 	renderer: {type: snabbdom},
 	view,
 	styles,
@@ -335,7 +335,7 @@ createCustomElement('x-mobit-table-component', {
  * Project Status Viewer Component
  * Displays a table of projects with their status, health metrics, and progress
  *
- * @seismicElement x-mobit-table-component
+ * @seismicElement x-mobit-status-report-viewer
  * @summary Table component for viewing project status and health indicators
  * @uib.label Project Status Viewer
  * @uib.icon list
