@@ -1,0 +1,25 @@
+{
+  "components": {
+    "x-mobit-table-component": {
+      "innerComponents": [],
+      "uiBuilder": {
+        "associatedTypes": [
+          "global.core",
+          "global.landing-page"
+        ],
+        "label": "Project Management Table",
+        "tileIcon": "./tile-icon/generic-tile-icon.svg",
+        "description": "ServiceNow Project Management Table with status reporting",
+        "category": "primitives"
+      },
+      "properties": [
+        {
+          "name": "projectsData",
+          "label": "Projects Data",
+          "description": "Array of project data from data broker"
+        }
+      ]
+    }
+  },
+  "scopeName": "x_mobit_spm_strep"
+}
