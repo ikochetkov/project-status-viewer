@@ -1,6 +1,6 @@
 {
   "components": {
-    "x-mobit-status-report-viewer": {
+    "x-mobit-table-component": {
       "innerComponents": [],
       "uiBuilder": {
         "associatedTypes": [
