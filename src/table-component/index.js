@@ -332,14 +332,14 @@ createCustomElement('x-mobit-table-component', {
 });
 
 /**
- * Project Management Table Component
+ * Project Status Viewer Component
  * Displays a table of projects with their status, health metrics, and progress
  *
  * @seismicElement x-mobit-table-component
- * @summary Table component displaying project data with status and health indicators
- * @uib.label Project Management Table
+ * @summary Table component for viewing project status and health indicators
+ * @uib.label Project Status Viewer
  * @uib.icon list
- * @uib.description Displays project data with status, health metrics, and progress
+ * @uib.description Displays project data with status, health metrics, and progress tracking
  * @uib.category data
  * @uib.properties projectsData
  */

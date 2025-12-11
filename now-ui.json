@@ -7,9 +7,9 @@
           "global.core",
           "global.landing-page"
         ],
-        "label": "Project Management Table",
+        "label": "Project Status Viewer",
         "tileIcon": "./tile-icon/generic-tile-icon.svg",
-        "description": "ServiceNow Project Management Table with status reporting",
+        "description": "View project status, health metrics, and progress tracking",
         "category": "primitives"
       },
       "properties": [
