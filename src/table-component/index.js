@@ -143,7 +143,7 @@ const view = (state, {updateState}) => {
 								<now-icon icon="ban-outline" size="lg" />
 							)}
 						</td>
-						<td className="col-progress">
+						<td className="col-progress center">
 							{row.percentComplete ? (
 								<div className="progress-full-width">
 									<div className="progress-text-label">{row.percentComplete}</div>
@@ -155,7 +155,7 @@ const view = (state, {updateState}) => {
 								<span className="empty-state">—</span>
 							)}
 						</td>
-					<td className="col-effort">
+					<td className="col-effort center">
 						{row.effortUtilized ? (() => {
 							const effortValue = parseFloat(row.effortUtilized);
 							const isOverUtilized = effortValue > 100;
@@ -210,12 +210,8 @@ createCustomElement('x-mobit-table-component', {
 				projectsArray = properties.projectsData.data;
 			}
 			
-			if (projectsArray.length > 0) {
-				updateState({data: projectsArray});
-			} else {
-				// Ensure we always update state, even if empty, to show the empty message
-				updateState({data: []});
-			}
+			// Always update state
+			updateState({data: projectsArray});
 		},
 		// THIS IS THE KEY: Listen to property changes like now-textarea does
 		[COMPONENT_PROPERTY_CHANGED]: ({action, properties, updateState}) => {
