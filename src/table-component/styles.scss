@@ -496,6 +496,10 @@ now-icon {
 	background-color: var(--primary);
 }
 
+.progress-fill.progress-red {
+	background-color: var(--error);
+}
+
 /* Column Widths */
 .col-project {
 	width: 30%;

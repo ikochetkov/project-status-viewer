@@ -229,18 +229,22 @@ const view = (state, {updateState}) => {
 									<span className="empty-state">—</span>
 								)}
 							</td>
-							<td className="col-effort">
-								{row.effortUtilized ? (
+						<td className="col-effort">
+							{row.effortUtilized ? (() => {
+								const effortValue = parseFloat(row.effortUtilized);
+								const isOverUtilized = effortValue > 100;
+								return (
 									<div className="progress-full-width">
 										<div className="progress-text-label">{row.effortUtilized}</div>
 										<div className="progress-container">
-											<div className="progress-fill progress-blue" style={{width: row.effortUtilized}}></div>
+											<div className={`progress-fill ${isOverUtilized ? 'progress-red' : 'progress-blue'}`} style={{width: Math.min(effortValue, 100) + '%'}}></div>
 										</div>
 									</div>
-								) : (
-									<span className="empty-state">—</span>
-								)}
-							</td>
+								);
+							})() : (
+								<span className="empty-state">—</span>
+							)}
+						</td>
 						</tr>
 					))}
 				</tbody>
