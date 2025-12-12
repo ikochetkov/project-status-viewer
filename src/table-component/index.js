@@ -212,6 +212,9 @@ createCustomElement('x-mobit-table-component', {
 			
 			if (projectsArray.length > 0) {
 				updateState({data: projectsArray});
+			} else {
+				// Ensure we always update state, even if empty, to show the empty message
+				updateState({data: []});
 			}
 		},
 		// THIS IS THE KEY: Listen to property changes like now-textarea does
@@ -228,9 +231,8 @@ createCustomElement('x-mobit-table-component', {
 					projectsArray = properties.projectsData.data;
 				}
 				
-				if (projectsArray.length > 0) {
-					updateState({data: projectsArray});
-				}
+				// Always update state to ensure rendering
+				updateState({data: projectsArray});
 			}
 		},
 		'UPDATE_DATA': ({updateState}, projects) => {
