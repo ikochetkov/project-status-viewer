@@ -1,6 +1,7 @@
 import {createCustomElement, actionTypes} from '@servicenow/ui-core';
 import snabbdom from '@servicenow/ui-renderer-snabbdom';
 import '@servicenow/now-icon';
+import '@servicenow/now-avatar';
 import styles from './styles.scss';
 
 const {COMPONENT_BOOTSTRAPPED, COMPONENT_PROPERTY_CHANGED} = actionTypes;
@@ -34,7 +35,7 @@ const view = (state, {updateState}) => {
 				<table className="project-table">
 					<thead>
 						<tr>
-							<th className="col-project">Project</th>
+							<th className="col-project">Projects ({data.length})</th>
 							<th className="col-status-date">Status date</th>
 							<th className="col-health center">Overall health</th>
 							<th className="col-metric center">Cost</th>
@@ -57,12 +58,18 @@ const view = (state, {updateState}) => {
 										</div>
 										<div className="project-name">{row.projectName}</div>
 									<div className="project-meta">
-											{row.projectManagerName && (
-												<div className="project-meta-item">
-													<now-icon icon="user-outline" size="md" />
-													<span>{row.projectManagerName}</span>
-												</div>
-											)}
+										{row.projectManagerName && (
+											<div className="project-meta-item">
+												<now-avatar 
+													aria-hidden="true" 
+													size="sm" 
+													user-name={row.projectManagerName} 
+													image-src={row.projectManagerImageSrc}
+													interaction="none"
+												></now-avatar>
+												<span>{row.projectManagerName}</span>
+											</div>
+										)}
 										{(row.startDate || row.endDate) && (
 											<div className="project-meta-item">
 												<now-icon icon="calendar-outline" size="md" />
