@@ -16,12 +16,168 @@ const getHealthClass = (health) => {
 	return classes[health] || 'green'
 };
 
-const hasStatusReport = (statusDate) => {
-	return statusDate && statusDate.trim() !== '';
+const cleanHtml = (html) => {
+	if (!html) return '';
+	// Remove HTML tags and decode entities
+	return html.replace(/<[^>]*>/g, '').trim();
+};
+
+const renderStatusWithTooltip = (status, tooltipText, statusType) => {
+	if (!status) return <now-icon icon="ban-outline" size="lg" />;
+	
+	const tooltipContent = tooltipText ? cleanHtml(tooltipText) : null;
+	
+	return (
+		<div className="tooltip-wrapper">
+			<span className={`health-status ${getHealthClass(status).toLowerCase()}`}>
+				<span className="health-dot"></span>
+				<span className="health-text">{status}</span>
+			</span>
+			{tooltipContent && (
+				<div className="tooltip-content">
+					{tooltipContent}
+				</div>
+			)}
+		</div>
+	);
+};
+
+const hasStatusReport = (statusReportSysID) => {
+	const result = statusReportSysID && statusReportSysID.trim() !== '';
+	if (result) console.log('Has status report:', statusReportSysID);
+	return result;
+};
+
+const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
+	const projectNum = project.project_number;
+	const activeTabKey = `${projectNum}-tab`;
+	const activeTab = expandedRows[activeTabKey] || 'details';
+
+	const tabs = [
+		{id: 'details', label: 'Details'},
+		{id: 'milestones', label: 'Milestones'},
+		{id: 'issues', label: 'Issues'},
+		{id: 'risks', label: 'Risks'},
+		{id: 'history', label: 'Status History'}
+	];
+
+	const getTabContent = (tabId) => {
+		switch(tabId) {
+			case 'details':
+				return (
+					<div className="tab-content details-content">
+						{project.executive_summary && <p>{project.executive_summary}</p>}
+						{project.achievements_last_week && <p>{project.achievements_last_week}</p>}
+						{project.key_activities_next_week && <p>{project.key_activities_next_week}</p>}
+						{project.comments && <p>{project.comments}</p>}
+					</div>
+				);
+			case 'milestones':
+				return (
+					<div className="tab-content">
+						{project.milestones && project.milestones.length > 0 ? (
+							<table className="detail-table">
+								<thead>
+									<tr><th>Number</th><th>Description</th><th>Start Date</th><th>State</th></tr>
+								</thead>
+								<tbody>
+									{project.milestones.map((m, i) => (
+										<tr key={i}><td>{m.number}</td><td>{m.short_description}</td><td>{m.start_date}</td><td>{m.state}</td></tr>
+									))}
+								</tbody>
+							</table>
+						) : <p style={{padding: '20px', textAlign: 'center', color: '#999'}}>No milestones found</p>}
+					</div>
+				);
+			case 'issues':
+				return (
+					<div className="tab-content">
+						{project.issues && project.issues.length > 0 ? (
+							<table className="detail-table">
+								<thead>
+									<tr><th>Number</th><th>Description</th><th>Priority</th><th>State</th></tr>
+								</thead>
+								<tbody>
+									{project.issues.map((i, idx) => (
+										<tr key={idx}><td>{i.number}</td><td>{i.short_description}</td><td>{i.priority}</td><td>{i.state}</td></tr>
+									))}
+								</tbody>
+							</table>
+						) : <p style={{padding: '20px', textAlign: 'center', color: '#999'}}>No issues found</p>}
+					</div>
+				);
+			case 'risks':
+				return (
+					<div className="tab-content">
+						{project.risks && project.risks.length > 0 ? (
+							<table className="detail-table">
+								<thead>
+									<tr><th>Number</th><th>Description</th><th>Probability</th><th>State</th></tr>
+								</thead>
+								<tbody>
+									{project.risks.map((r, idx) => (
+										<tr key={idx}><td>{r.number}</td><td>{r.short_description}</td><td>{r.probability}</td><td>{r.state}</td></tr>
+									))}
+								</tbody>
+							</table>
+						) : <p style={{padding: '20px', textAlign: 'center', color: '#999'}}>No risks found</p>}
+					</div>
+				);
+			case 'history':
+				return (
+					<div className="tab-content">
+						{project.status_history && project.status_history.length > 0 ? (
+							<table className="detail-table">
+								<thead>
+									<tr><th>Number</th><th>Date</th><th>Overall Health</th><th>Schedule</th><th>Cost</th></tr>
+								</thead>
+								<tbody>
+									{project.status_history.map((h, idx) => (
+										<tr key={idx}><td>{h.number}</td><td>{h.as_on}</td><td>{h.overall_health}</td><td>{h.schedule}</td><td>{h.cost}</td></tr>
+									))}
+								</tbody>
+							</table>
+						) : <p style={{padding: '20px', textAlign: 'center', color: '#999'}}>No status history found</p>}
+					</div>
+				);
+			default: return null;
+		}
+	};
+
+	return (
+		<div className="accordion-content">
+			<div className="tabs-header">
+				{tabs.map(tab => (
+					<button 
+						key={tab.id}
+						className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+						on={{
+							click: () => {
+								const newExpanded = {...expandedRows};
+								newExpanded[activeTabKey] = tab.id;
+								expandedRowsHelpers.updateExpanded(newExpanded);
+							}
+						}}
+					>
+						{tab.label}
+					</button>
+				))}
+			</div>
+			<div className="tabs-body">
+				{getTabContent(activeTab)}
+			</div>
+		</div>
+	);
 };
 
 const view = (state, {updateState}) => {
-	let {data = []} = state;
+	let {data = [], expandedRows = {}} = state;
+	
+	const expandedRowsHelpers = {
+		updateExpanded: (newExpandedRows) => {
+			updateState({expandedRows: newExpandedRows});
+		}
+	};
 	
 	return (
 		<div className="table-container">
@@ -35,6 +191,7 @@ const view = (state, {updateState}) => {
 				<table className="project-table">
 					<thead>
 						<tr>
+							<th className="col-expand"></th>
 							<th className="col-project">Projects ({data.length})</th>
 							<th className="col-status-date">Status date</th>
 							<th className="col-health center">Overall health</th>
@@ -47,8 +204,27 @@ const view = (state, {updateState}) => {
 						</tr>
 					</thead>
 					<tbody>
-						{data.map((row, index) => (
-						<tr key={index}>
+						{data.flatMap((row, index) => [
+							<tr key={`row-${index}`}>
+							<td className="col-expand center">
+								{hasStatusReport(row.statusReportSysID) && (
+									<button
+										className="expand-btn"
+										on={{
+											click: () => {
+												console.log('Expand button clicked for', row.project_number);
+												const newExpanded = {...expandedRows};
+												newExpanded[row.project_number] = !newExpanded[row.project_number];
+												console.log('New expandedRows:', newExpanded);
+												expandedRowsHelpers.updateExpanded(newExpanded);
+											}
+										}}
+										style={{background: 'none', border: 'none', cursor: 'pointer', padding: '0'}}
+									>
+										<now-icon icon={expandedRows[row.project_number] ? "chevron-down-outline" : "chevron-right-outline"} size="md"></now-icon>
+									</button>
+								)}
+							</td>
 							<td className="col-project">
 								<div className="project-info">
 									<div className="project-details">
@@ -79,7 +255,7 @@ const view = (state, {updateState}) => {
 									</div>
 									</div>
 									<div className="project-action">
-										{hasStatusReport(row.statusDate) ? (
+										{hasStatusReport(row.statusReportSysID) ? (
 											<a href={`/nav_to.do?uri=project_status.do?sys_id=${row.statusReportSysID}`} target="_blank" rel="noopener noreferrer" className="view-report-link">
 												<now-icon icon="document-outline" size="md" />
 												<span>View Status Report - {row.statusReportNumber}</span>
@@ -101,54 +277,19 @@ const view = (state, {updateState}) => {
 								)}
 							</td>
 						<td className="col-health center">
-							{row.overallHealth ? (
-								<span className={`health-status ${getHealthClass(row.overallHealth).toLowerCase()}`}>
-									<span className="health-dot"></span>
-									<span className="health-text">{row.overallHealth}</span>
-								</span>
-							) : (
-								<now-icon icon="ban-outline" size="lg" />
-							)}
+							{renderStatusWithTooltip(row.overallHealth, row.comments, 'overall')}
 						</td>
 						<td className="col-metric center">
-							{row.cost ? (
-								<span className={`health-status ${getHealthClass(row.cost).toLowerCase()}`}>
-									<span className="health-dot"></span>
-									<span className="health-text">{row.cost}</span>
-								</span>
-							) : (
-								<now-icon icon="ban-outline" size="lg" />
-							)}
+							{renderStatusWithTooltip(row.cost, row.cost_comments, 'cost')}
 						</td>
 						<td className="col-metric center">
-							{row.scope ? (
-								<span className={`health-status ${getHealthClass(row.scope).toLowerCase()}`}>
-									<span className="health-dot"></span>
-									<span className="health-text">{row.scope}</span>
-								</span>
-							) : (
-								<now-icon icon="ban-outline" size="lg" />
-							)}
+							{renderStatusWithTooltip(row.scope, row.scope_comments, 'scope')}
 						</td>
 						<td className="col-metric center">
-							{row.schedule ? (
-								<span className={`health-status ${getHealthClass(row.schedule).toLowerCase()}`}>
-									<span className="health-dot"></span>
-									<span className="health-text">{row.schedule}</span>
-								</span>
-							) : (
-								<now-icon icon="ban-outline" size="lg" />
-							)}
+							{renderStatusWithTooltip(row.schedule, row.schedule_comments, 'schedule')}
 						</td>
 						<td className="col-metric center">
-							{row.resources ? (
-								<span className={`health-status ${getHealthClass(row.resources).toLowerCase()}`}>
-									<span className="health-dot"></span>
-									<span className="health-text">{row.resources}</span>
-								</span>
-							) : (
-								<now-icon icon="ban-outline" size="lg" />
-							)}
+							{renderStatusWithTooltip(row.resources, row.resource_comments, 'resources')}
 						</td>
 						<td className="col-progress center">
 							{row.percentComplete ? (
@@ -178,8 +319,15 @@ const view = (state, {updateState}) => {
 							<span className="empty-state">—</span>
 						)}
 					</td>
-						</tr>
-					))}
+						</tr>,
+						...(hasStatusReport(row.statusReportSysID) && expandedRows[row.project_number] ? [
+							<tr key={`expand-${index}`} className="accordion-row">
+								<td colSpan="10">
+									{renderAccordionTabs(row, expandedRows, expandedRowsHelpers)}
+								</td>
+							</tr>
+						] : [])
+					])}
 				</tbody>
 				</table>
 			)}
@@ -202,7 +350,8 @@ createCustomElement('x-mobit-table-component', {
 		}
 	},
 	initialState: {
-		data: []
+		data: [],
+		expandedRows: {}
 	},
 	handlers: {},
 	actionHandlers: {
