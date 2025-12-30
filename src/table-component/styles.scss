@@ -179,9 +179,22 @@
 	transition: background-color var(--transition-short);
 }
 
+.project-table tbody tr.project-row.expandable:hover {
+	cursor: pointer;
+}
+
+.project-table tbody tr.project-row.expandable:hover .expand-btn {
+	background-color: var(--surface-variant);
+}
+
 
 .project-table tbody tr:not(.accordion-row):hover td {
 	background-color: var(--surface-variant);
+}
+
+/* Stronger hover for expandable project rows (avoid blending with progress track) */
+.project-table tbody tr.project-row.expandable:hover td {
+	background-color: var(--secondary-container);
 }
 
 .project-table tbody tr:last-child {
@@ -282,6 +295,26 @@
 	letter-spacing: 0.3px;
 }
 
+.project-open-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--on-surface-variant);
+	text-decoration: none;
+	border-radius: var(--radius-xs);
+	padding: 2px;
+	line-height: 1;
+
+	&:hover {
+		color: var(--primary);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
+	}
+}
+
 .project-company {
 	font-size: var(--font-size-body-small);
 	font-weight: var(--font-weight-medium);
@@ -371,6 +404,22 @@ now-icon {
 	max-width: 100%;
 	min-width: 0;
 	justify-content: flex-start;
+}
+
+.status-report-row {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	color: var(--on-surface-variant);
+	font-size: var(--font-size-body-small);
+	padding: var(--space-1) 0;
+}
+
+.status-report-row span {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .view-report-link,
@@ -515,7 +564,9 @@ now-icon {
 /* Tooltip Styles */
 .tooltip-wrapper {
 	position: relative;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	cursor: help;
 
 	&:hover .tooltip-content {
@@ -562,6 +613,22 @@ now-icon {
 	}
 }
 
+/* Use on right-edge cells (e.g., main-table circle KPIs) to avoid horizontal overflow */
+.tooltip-wrapper.tooltip-anchor-right .tooltip-content {
+	left: auto;
+	right: 0;
+	transform: none;
+	min-width: 0;
+	width: auto;
+	max-width: 320px;
+}
+
+.tooltip-wrapper.tooltip-anchor-right .tooltip-content::after {
+	left: auto;
+	right: 14px;
+	transform: none;
+}
+
 /* Empty State Icons */
 .empty-icon {
 	font-size: var(--font-size-title-large);
@@ -603,7 +670,7 @@ now-icon {
 	align-items: center;
 	width: 100%;
 	height: 8px;
-	background-color: var(--surface-variant);
+	background-color: var(--outline-variant);
 	border-radius: var(--radius-full);
 	overflow: hidden;
 	margin: 0;
@@ -1067,6 +1134,16 @@ now-icon {
 	min-width: 0;
 }
 
+.details-left {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.details-left .section {
+	margin-top: 0;
+}
+
 .effort-card {
 	background: var(--surface);
 	border: 1px solid var(--outline-variant);
@@ -1096,6 +1173,7 @@ now-icon {
 	color: var(--primary);
 	text-decoration: none;
 	font-weight: var(--font-weight-medium);
+	font-size: var(--font-size-label-small);
 	white-space: nowrap;
 }
 
@@ -1113,6 +1191,19 @@ now-icon {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+}
+
+.planned-end-row {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.delay-text {
+	font-size: 15px;
+	font-weight: var(--font-weight-medium);
+	color: var(--error);
 }
 
 .effort-kpi-label {
@@ -1136,6 +1227,32 @@ now-icon {
 
 .effort-kpi-value.bad {
 	color: var(--error);
+}
+
+.effort-kpi-value-row {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.effort-kpi-icon-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--on-surface-variant);
+	text-decoration: none;
+	border-radius: var(--radius-xs);
+	padding: 2px;
+	line-height: 1;
+}
+
+.effort-kpi-icon-link:hover {
+	color: var(--primary);
+}
+
+.effort-kpi-icon-link:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
 }
 
 .effort-kpi-value.link {
@@ -1189,6 +1306,52 @@ now-icon {
 	font-weight: var(--font-weight-semibold);
 }
 
+.progress-circle {
+	--size: 56px;
+	--thickness: 6px;
+	--pc: var(--primary);
+
+	position: relative;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 50%;
+	background: conic-gradient(var(--pc) calc(var(--p) * 1%), var(--outline-variant) 0);
+	flex-shrink: 0;
+}
+
+.progress-circle.is-over {
+	--pc: var(--error);
+}
+
+.progress-circle.is-green {
+	--pc: var(--success);
+}
+
+.progress-circle.progress-circle--sm {
+	--size: 60px;
+	--thickness: 6px;
+}
+.progress-circle-inner {
+	position: absolute;
+	inset: var(--thickness);
+	border-radius: 50%;
+	background: var(--surface);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.progress-circle-value {
+	font-size: var(--font-size-body-small);
+	font-weight: var(--font-weight-semibold);
+	color: var(--on-surface);
+	font-family: var(--font-metrics);
+}
+
+.progress-circle.progress-circle--sm .progress-circle-value {
+	font-size: 10px;
+}
+
 .kpi-row {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -1221,7 +1384,6 @@ now-icon {
 }
 
 .section {
-	margin-top: 20px;
 	background: var(--surface);
 	border: 1px solid var(--outline-variant);
 	border-left: 2px solid var(--primary);

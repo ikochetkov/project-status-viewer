@@ -73,6 +73,39 @@ const parseDateLike = (value) => {
 	return Number.isNaN(parsed.getTime()) ? null : parsed;
 };
 
+const toUtcMidnightMs = (date) => {
+	if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
+	return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
+const getPlannedEndDateValue = (project) =>
+	project?.end_date ||
+	project?.plannedEndDate ||
+	project?.planned_end_date ||
+	project?.u_planned_end_date ||
+	project?.u_planned_end ||
+	project?.plannedEnd ||
+	project?.planned_end;
+
+const getApprovedEndDateValue = (project) =>
+	project?.endDate ||
+	project?.approvedEndDate ||
+	project?.approved_end_date ||
+	project?.u_approved_end_date ||
+	project?.u_approved_end ||
+	project?.approvedEnd ||
+	project?.approved_end;
+
+const getDelayDays = (plannedEndValue, approvedEndValue) => {
+	const planned = parseDateLike(plannedEndValue);
+	const approved = parseDateLike(approvedEndValue);
+	if (!planned || !approved) return null;
+	const plannedMs = toUtcMidnightMs(planned);
+	const approvedMs = toUtcMidnightMs(approved);
+	if (plannedMs === null || approvedMs === null) return null;
+	return Math.round((plannedMs - approvedMs) / 86400000);
+};
+
 const formatDateOnly = (value) => {
 	if (!value) return '—';
 	const parsed = parseDateLike(value);
@@ -152,7 +185,6 @@ const renderHealthStatus = (value) => {
 
 const hasStatusReport = (statusReportSysID) => {
 	const result = statusReportSysID && statusReportSysID.trim() !== '';
-	if (result) console.log('Has status report:', statusReportSysID);
 	return result;
 };
 
@@ -216,15 +248,20 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 									<div className="effort-card">
 										<div className="effort-card-header">
 											<div className="effort-card-title">Effort Tracking</div>
-											{project.statusReportSysID && (
+											{(project.statusReportUrl || project.statusReportSysID) && (
 												<a
-													href={`/nav_to.do?uri=project_status.do?sys_id=${project.statusReportSysID}`}
+													href={
+														project.statusReportUrl ||
+														`/nav_to.do?uri=project_status.do?sys_id=${project.statusReportSysID}`
+													}
 													target="_blank"
 													rel="noopener noreferrer"
 													className="status-report-link"
 												>
-													<span>View full status report</span>
-													<now-icon icon="open-outline" size="sm"></now-icon>
+													<span>
+														Open Status Report Record{project.statusReportNumber ? ` - ${project.statusReportNumber}` : ''}
+													</span>
+													<now-icon icon="open-link-right-outline" size="sm"></now-icon>
 												</a>
 											)}
 										</div>
@@ -248,18 +285,22 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 													const hours = Number(project.time_cards_submitted_hours || 0);
 													const cls = hours > 0 ? 'bad' : 'good';
 													const label = `${Number.isFinite(hours) ? hours : 0} h`;
-													return project.time_cards_submitted_link ? (
-														<a
-															href={project.time_cards_submitted_link}
-															target="_blank"
-															rel="noopener noreferrer"
-															className={`effort-kpi-value link ${cls}`}
-														>
-															<span>{label}</span>
-															<now-icon icon="arrow-right-outline" size="sm"></now-icon>
-														</a>
-													) : (
-														<div className={`effort-kpi-value ${cls}`}>{label}</div>
+													return (
+														<div className="effort-kpi-value-row">
+															<div className={`effort-kpi-value ${cls}`}>{label}</div>
+															{project.time_cards_submitted_link && (
+																<a
+																	href={project.time_cards_submitted_link}
+																	target="_blank"
+																	rel="noopener noreferrer"
+																	className="effort-kpi-icon-link"
+																	aria-label="Open unapproved effort time cards"
+																	title="Open time cards"
+																>
+																	<now-icon icon="open-link-right-outline" size="sm"></now-icon>
+																</a>
+															)}
+														</div>
 													);
 												})()}
 											</div>
@@ -269,7 +310,18 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 
 										<div className="effort-kpi-single">
 											<div className="effort-kpi-label">Planned End Date</div>
-											<div className="effort-kpi-value">{formatDateKpi(project.endDate)}</div>
+												{(() => {
+													const plannedEndValue = getPlannedEndDateValue(project) || project.endDate;
+													const delayDays = getDelayDays(plannedEndValue, getApprovedEndDateValue(project));
+													return (
+														<div className="effort-kpi-value planned-end-row">
+															<span>{formatDateKpi(plannedEndValue)}</span>
+															{typeof delayDays === 'number' && delayDays > 1 && (
+																<span className="delay-text">({delayDays} days delayed)</span>
+															)}
+														</div>
+													);
+												})()}
 										</div>
 
 										<div className="effort-divider"></div>
@@ -288,7 +340,7 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 														<div className="effort-bar-head">
 															<span className="tooltip-wrapper">
 																<span className="effort-bar-label">Effort Utilized</span>
-																<span className="tooltip-content">(Actual Effort / Allocated Effort) * 100</span>
+																<span className="tooltip-content">Effort Utilized = (Actual Effort / Allocated Effort) * 100</span>
 															</span>
 															<div className="effort-bar-value">{formatPercentLabel(val)}</div>
 														</div>
@@ -636,6 +688,17 @@ const view = (state, {updateState}) => {
 			updateState({expandedRows: newExpandedRows});
 		}
 	};
+
+	const toggleProjectExpanded = (projectNumber) => {
+		if (!projectNumber) return;
+		const newExpanded = {...expandedRows};
+		const wasOpen = Boolean(newExpanded[projectNumber]);
+		data.forEach((row) => {
+			if (row?.project_number) newExpanded[row.project_number] = false;
+		});
+		newExpanded[projectNumber] = !wasOpen;
+		expandedRowsHelpers.updateExpanded(newExpanded);
+	};
 	
 	return (
 		<div className="table-container">
@@ -663,18 +726,34 @@ const view = (state, {updateState}) => {
 					</thead>
 					<tbody>
 						{data.flatMap((row, index) => [
-							<tr key={`row-${index}`} className={`project-row ${expandedRows[row.project_number] ? 'expanded' : ''}`}> 
+							<tr
+								key={`row-${index}`}
+								className={`project-row ${hasStatusReport(row.statusReportSysID) ? 'expandable' : ''} ${expandedRows[row.project_number] ? 'expanded' : ''}`}
+								on={{
+									click: (evt) => {
+										if (!hasStatusReport(row.statusReportSysID)) return;
+										let path = [];
+										try {
+											path = typeof evt?.composedPath === 'function' ? evt.composedPath() : [];
+										} catch (e) {
+											path = [];
+										}
+
+										const clickedLink = path.some((el) => el?.tagName === 'A' || el?.nodeName === 'A');
+										const clickedButton = path.some((el) => el?.tagName === 'BUTTON' || el?.nodeName === 'BUTTON');
+										if (clickedLink || clickedButton) return;
+										toggleProjectExpanded(row.project_number);
+									}
+								}}
+							>
 							<td className="col-expand center">
 								{hasStatusReport(row.statusReportSysID) && (
 									<button
 										className="expand-btn"
 										on={{
-											click: () => {
-												console.log('Expand button clicked for', row.project_number);
-												const newExpanded = {...expandedRows};
-												newExpanded[row.project_number] = !newExpanded[row.project_number];
-												console.log('New expandedRows:', newExpanded);
-												expandedRowsHelpers.updateExpanded(newExpanded);
+											click: (evt) => {
+												evt?.stopPropagation?.();
+												toggleProjectExpanded(row.project_number);
 											}
 										}}
 										style={{background: 'none', border: 'none', cursor: 'pointer', padding: '0'}}
@@ -687,50 +766,48 @@ const view = (state, {updateState}) => {
 								<div className="project-info">
 									<div className="project-details">
 										<div className="project-header">
-											{row.projectUrl ? (
+											<span className="project-id">{row.project_number}</span>
+											{row.projectUrl && (
 												<a
 													href={row.projectUrl}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="project-id"
+													className="project-open-link"
+													aria-label={`Open ${row.project_number} project`}
+													title="Open project"
 												>
-													{row.project_number}
+													<now-icon icon="open-link-right-outline" size="sm"></now-icon>
 												</a>
-											) : (
-												<span className="project-id">{row.project_number}</span>
 											)}
 											{row.company && <span className="project-company">{row.company}</span>}
 										</div>
 										<div className="project-name">{row.projectName}</div>
-									<div className="project-meta">
-										{row.projectManagerName && (
-											<div className="project-meta-item">
-												<now-avatar 
-													aria-hidden="true" 
-													size="sm" 
-													user-name={row.projectManagerName} 
-													image-src={row.projectManagerImageSrc}
-													interaction="none"
-												></now-avatar>
-												<span>{row.projectManagerName}</span>
+										<div className="project-meta">
+											{row.projectManagerName && (
+												<div className="project-meta-item">
+													<now-avatar 
+														aria-hidden="true" 
+														size="sm" 
+														user-name={row.projectManagerName} 
+														image-src={row.projectManagerImageSrc}
+														interaction="none"
+													></now-avatar>
+													<span>{row.projectManagerName}</span>
 											</div>
-										)}
-										{(row.startDate || row.endDate) && (
-											<div className="project-meta-item">
-												<now-icon icon="calendar-outline" size="md" />
-												<span>
-													{row.startDate ? formatDateOnly(row.startDate) : '?'} – {row.endDate ? formatDateOnly(row.endDate) : '?'}
-												</span>
-											</div>
-										)}
-									</div>
+											)}
+											{(row.startDate || row.endDate) && (
+												<div className="project-meta-item">
+													<now-icon icon="calendar-outline" size="md" />
+													<span>
+														{row.startDate ? formatDateOnly(row.startDate) : '?'} – {row.endDate ? formatDateOnly(row.endDate) : '?'}
+													</span>
+												</div>
+											)}
+										</div>
 									</div>
 									<div className="project-action">
 										{hasStatusReport(row.statusReportSysID) ? (
-											<a href={`/nav_to.do?uri=project_status.do?sys_id=${row.statusReportSysID}`} target="_blank" rel="noopener noreferrer" className="view-report-link">
-												<now-icon icon="document-outline" size="md" />
-												<span>View Status Report - {row.statusReportNumber}</span>
-											</a>
+											null
 										) : (
 											<span className="status-pending">
 												<now-icon icon="eye-slash-outline" size="md" />
@@ -763,33 +840,52 @@ const view = (state, {updateState}) => {
 							{renderStatusWithTooltip(row.resources, row.resource_comments, 'resources')}
 						</td>
 						<td className="col-progress center">
-							{row.percentComplete ? (
-								<div className="progress-full-width">
-									<div className="progress-text-label">{row.percentComplete}</div>
-									<div className="progress-container">
-										<div className="progress-fill progress-green" style={{width: row.percentComplete}}></div>
-									</div>
-								</div>
-							) : (
-								<span className="empty-state">—</span>
-							)}
+							{(() => {
+								const val = row.percentComplete;
+								const num = parsePercentNumber(val);
+								if (num === null) return <span className="empty-state">—</span>;
+								const width = Math.min(Math.max(num, 0), 100);
+								const label = formatPercentLabel(val);
+								return (
+									<span className="tooltip-wrapper tooltip-anchor-right" aria-label={`Percent complete ${label}`}>
+										<div
+											className="progress-circle progress-circle--sm is-green"
+											style={{'--p': width}}
+											aria-hidden="true"
+										>
+											<div className="progress-circle-inner">
+												<div className="progress-circle-value">{label}</div>
+											</div>
+										</div>
+										<div className="tooltip-content">Percent Complete</div>
+									</span>
+								);
+							})()}
 						</td>
-					<td className="col-effort center">
-						{row.effortUtilized ? (() => {
-							const effortValue = parseFloat(row.effortUtilized);
-							const isOverUtilized = effortValue > 100;
-							return (
-								<div className="progress-full-width">
-									<div className="progress-text-label">{row.effortUtilized}</div>
-									<div className="progress-container">
-										<div className={`progress-fill ${isOverUtilized ? 'progress-red' : 'progress-blue'}`} style={{width: Math.min(effortValue, 100) + '%'}}></div>
-									</div>
-								</div>
-							);
-						})() : (
-							<span className="empty-state">—</span>
-						)}
-					</td>
+						<td className="col-effort center">
+							{(() => {
+								const val = row.effortUtilized;
+								const num = parsePercentNumber(val);
+								if (num === null) return <span className="empty-state">—</span>;
+								const isOver = num > 100;
+								const width = Math.min(Math.max(num, 0), 100);
+								const label = formatPercentLabel(val);
+								return (
+									<span className="tooltip-wrapper tooltip-anchor-right" aria-label={`Effort utilized ${label}`}>
+										<div
+											className={`progress-circle progress-circle--sm ${isOver ? 'is-over' : ''}`}
+											style={{'--p': width}}
+											aria-hidden="true"
+										>
+											<div className="progress-circle-inner">
+												<div className="progress-circle-value">{label}</div>
+											</div>
+										</div>
+										<div className="tooltip-content">Effort Utilized = (Actual Effort / Allocated Effort) * 100</div>
+									</span>
+								);
+							})()}
+						</td>
 						</tr>,
 						...(hasStatusReport(row.statusReportSysID) && expandedRows[row.project_number] ? [
 							<tr key={`expand-${index}`} className="accordion-row">
