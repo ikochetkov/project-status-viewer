@@ -25,6 +25,7 @@
     "@servicenow/now-avatar": "^19.8.2-ecd",
     "@servicenow/now-icon": "^19.8.2-ecd",
     "@servicenow/now-textarea": "^19.8.2-ecd",
+    "@servicenow/now-toggle": "^19.8.2-ecd",
     "@servicenow/sass-kit": "latest",
     "@servicenow/ui-core": "24.1.1",
     "@servicenow/ui-renderer-snabbdom": "24.1.1"
