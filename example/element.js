@@ -1,4 +1,5 @@
 import '../src/table-component';
+import {mockProjectsData} from './mockData';
 
 const el = document.createElement('DIV');
 document.body.appendChild(el);
@@ -9,6 +10,5 @@ el.innerHTML = `
 
 const component = el.querySelector('x-mobit-table-component');
 if (component) {
-	// Intentionally not wiring mock data by default.
-	// Provide `projectsData` from your real integration layer when needed.
+	component.projectsData = mockProjectsData;
 }

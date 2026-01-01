@@ -681,7 +681,31 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 };
 
 const view = (state, {updateState}) => {
-	let {data = [], expandedRows = {}} = state;
+	let {data = [], expandedRows = {}, createSrModal = {open: false, projectSysID: null}} = state;
+
+	const getStatusReportCreationPath = (projectSysID) =>
+		`/now/workspace/project/home/sub/status-report/pm_project/${encodeURIComponent(projectSysID)}/params/page-name/status-report`;
+
+	const openCreateSrModal = (projectSysID) => {
+		if (!projectSysID) return;
+		updateState({createSrModal: {open: true, projectSysID}});
+	};
+
+	const closeCreateSrModal = () => {
+		updateState({createSrModal: {open: false, projectSysID: null}});
+	};
+
+	const goToStatusReportsPage = () => {
+		const projectSysID = createSrModal?.projectSysID;
+		if (!projectSysID) return;
+		const url = getStatusReportCreationPath(projectSysID);
+		closeCreateSrModal();
+		try {
+			window?.open?.(url, '_blank', 'noopener');
+		} catch (e) {
+			// no-op
+		}
+	};
 	
 	const expandedRowsHelpers = {
 		updateExpanded: (newExpandedRows) => {
@@ -702,6 +726,63 @@ const view = (state, {updateState}) => {
 	
 	return (
 		<div className="table-container">
+			{createSrModal?.open && (
+				<div
+					className="modal-backdrop"
+					on={{
+						click: () => {
+							closeCreateSrModal();
+						}
+					}}
+				>
+					<div
+						className="modal"
+						on={{
+							click: (e) => {
+								e?.stopPropagation?.();
+							}
+						}}
+					>
+						<div className="modal-header">
+							<div className="modal-title">Create Status Report</div>
+							<button
+								className="modal-close"
+								on={{
+									click: () => closeCreateSrModal()
+								}}
+								aria-label="Close"
+								title="Close"
+							>
+								<now-icon icon="close-outline" size="md"></now-icon>
+							</button>
+						</div>
+						<div className="modal-body">
+							<p>
+								When you click the button below, you will be navigated to the Status Report creation page.
+								 On that page, click <strong>Create Status Report</strong> and select <strong>Mobiz (MSP)</strong> domain.
+							</p>
+							<p>
+								Before creating the Status Report, please make sure these items are up to date, as they will be captured into the status report during submission:
+							</p>
+							<ul>
+								<li>Completion %</li>
+								<li>RIDAC tab</li>
+								<li>Milestones</li>
+								<li>Issues, Risks, and key updates</li>
+							</ul>
+						</div>
+						<div className="modal-actions">
+							<button className="btn-secondary" on={{click: () => closeCreateSrModal()}}>
+								Cancel
+							</button>
+							<button className="btn-primary" on={{click: () => goToStatusReportsPage()}}>
+								Go to Status Reports page
+								<now-icon icon="open-link-right-outline" size="sm"></now-icon>
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 			{data.length === 0 ? (
 				<div style={{padding: '40px', textAlign: 'center', color: '#999'}}>
 					<now-icon icon="cloud-slash-outline" size="xl" />
@@ -809,10 +890,34 @@ const view = (state, {updateState}) => {
 										{hasStatusReport(row.statusReportSysID) ? (
 											null
 										) : (
-											<span className="status-pending">
-												<now-icon icon="eye-slash-outline" size="md" />
-												<span style={{color: "red", fontWeight: "bold"}}>NO STATUS REPORT</span>
-											</span>
+												<div className="status-pending">
+													<span className="status-pending-label">
+														<now-icon icon="eye-slash-outline" size="md" />
+														<span className="status-pending-text">NO STATUS REPORT</span>
+													</span>
+															<now-icon
+																className="status-create-icon"
+																icon="plus-outline"
+																size="md"
+																role="button"
+																tabindex="0"
+																aria-label="Create status report"
+																on={{
+																	click: (evt) => {
+																		evt?.stopPropagation?.();
+																		openCreateSrModal(row.projectSysID);
+																	},
+																	keydown: (evt) => {
+																		const key = evt?.key;
+																		if (key === 'Enter' || key === ' ') {
+																			evt?.preventDefault?.();
+																			evt?.stopPropagation?.();
+																			openCreateSrModal(row.projectSysID);
+																		}
+																}
+															}}
+															/>
+												</div>
 										)}
 									</div>
 								</div>
@@ -918,7 +1023,8 @@ createCustomElement('x-mobit-table-component', {
 	},
 	initialState: {
 		data: [],
-		expandedRows: {}
+		expandedRows: {},
+		createSrModal: {open: false, projectSysID: null}
 	},
 	handlers: {},
 	actionHandlers: {

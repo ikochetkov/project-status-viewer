@@ -404,6 +404,115 @@ now-icon {
 	max-width: 100%;
 	min-width: 0;
 	justify-content: flex-start;
+	gap: var(--space-2);
+}
+
+.modal-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+	z-index: 1000;
+}
+
+.modal {
+	width: min(560px, 100%);
+	background: var(--surface);
+	border: 1px solid var(--outline-variant);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-2);
+	overflow: hidden;
+}
+
+.modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 16px;
+	border-bottom: 1px solid var(--outline-variant);
+}
+
+.modal-title {
+	font-size: var(--font-size-title-medium);
+	font-weight: var(--font-weight-semibold);
+	color: var(--on-surface);
+}
+
+.modal-close {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 0;
+	padding: 4px;
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+}
+
+.modal-close:hover {
+	background: var(--secondary-container);
+}
+
+.modal-body {
+	padding: 12px 16px;
+	color: var(--on-surface-variant);
+	font-size: var(--font-size-body-medium);
+}
+
+.modal-body p {
+	margin: 0 0 10px 0;
+}
+
+.modal-body ul {
+	margin: 0;
+	padding-left: 18px;
+}
+
+.modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	padding: 12px 16px 16px;
+}
+
+.btn-primary,
+.btn-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border-radius: var(--radius-sm);
+	padding: 8px 12px;
+	font-weight: var(--font-weight-medium);
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.btn-primary {
+	background: var(--surface);
+	color: var(--primary);
+	border-color: var(--primary);
+}
+
+.btn-primary:hover {
+	background: var(--secondary-container);
+}
+
+.btn-primary now-icon {
+	color: currentColor;
+}
+
+.btn-secondary {
+	background: transparent;
+	border-color: var(--outline-variant);
+	color: var(--on-surface);
+}
+
+.btn-secondary:hover {
+	background: var(--secondary-container);
 }
 
 .status-report-row {
@@ -423,34 +532,33 @@ now-icon {
 }
 
 .view-report-link,
-.status-pending {
-	max-width: 100%;
-	min-width: 0;
-}
-
-.view-report-link span,
-.status-pending span {
-	min-width: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.view-report-link {
+now-icon.status-create-icon {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2);
-	color: var(--primary);
-	text-decoration: none;
-	font-size: var(--font-size-body-small);
-	padding: var(--space-1) 0;
-	transition: color var(--transition-short);
-	font-weight: var(--font-weight-medium);
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	background: rgb(var(--now-color_primary-container));
+	color: rgb(var(--now-color_primary));
+	border: 1px solid rgba(var(--now-color_primary), 0.15);
+	cursor: pointer;
+	user-select: none;
+	transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
 
-	&:hover {
-		color: var(--on-primary-container);
-		text-decoration: underline;
-	}
+now-icon.status-create-icon:hover {
+	background: rgb(var(--now-color_primary));
+	color: rgb(var(--now-color_on-primary));
+}
+
+now-icon.status-create-icon:active {
+	transform: translateY(1px);
+}
+
+now-icon.status-create-icon:focus-visible {
+	outline: 2px solid rgba(var(--now-color_primary), 0.45);
+	outline-offset: 2px;
 }
 
 .status-pending {
@@ -460,6 +568,17 @@ now-icon {
 	color: var(--on-surface-variant);
 	font-size: var(--font-size-body-small);
 	padding: var(--space-1) 0;
+}
+
+.status-pending-label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+
+.status-pending-text {
+	color: var(--error);
+	font-weight: var(--font-weight-semibold);
 }
 
 /* Status Date */
