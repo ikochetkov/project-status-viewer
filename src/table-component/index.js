@@ -1038,7 +1038,7 @@ const view = (state, {updateState}) => {
 	);
 };
 
-createCustomElement('x-mobit-table-component', {
+createCustomElement('mobiz-project-status-viewer', {
 	renderer: {type: snabbdom},
 	view,
 	styles,

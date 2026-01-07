@@ -21,11 +21,11 @@
 
 ## Developer workflows (local)
 - Install deps: `npm install`
-- Dev server: `npm run dev` (alias: `snc ui-component develop`)
+- **IMPORTANT: Before running dev server locally**, comment out mock data assignment in [example/element.js](../example/element.js) (lines 12-16). Mock data should be commented out by default to prevent override of real instance data.
+- Dev server: `npm run dev` (alias: `snc ui-component develop`) - this will start at http://127.0.0.1:8081/
 - Build: `npm run build` (runs `snc ui-component build`)
 - Instance proxy for local dev is configured in [now-cli.json](../now-cli.json) (proxies `/api`).
 
-## Repo gotchas
-- [example/element.js](../example/element.js) is a local demo harness; it may drift from the build output (don’t assume `example/` is validated by CI).
+## Repo gotchas- **Mock data workflow**: [example/element.js](../example/element.js) contains mock data assignment (lines 12-16) that **must be commented out** before starting dev server for any local development. This prevents mock data from overriding real instance data. Uncomment only for local testing when needed.- [example/element.js](../example/element.js) is a local demo harness; it may drift from the build output (don’t assume `example/` is validated by CI).
 - There is a test stub at [src/table-component/__tests__/index.js](../src/table-component/__tests__/index.js), but `package.json` currently has **no** `test` script.
 - [pom.xml](../pom.xml) exists for Maven-based pipelines and pins an older Node version; local dev should follow `package.json` (`node >= 22`).
