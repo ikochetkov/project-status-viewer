@@ -147,6 +147,32 @@ initialState: {
 
 ---
 
+## ⚠️ IMPORTANT: Before Committing to GitHub
+
+### Comment Out Mock Data Assignment
+The `example/element.js` file contains mock data that's useful for local development but **must be commented out before committing** to GitHub or deploying to ServiceNow.
+
+**File**: `example/element.js`
+
+```javascript
+// ⚠️ COMMENT THIS OUT before committing to production!
+// const component = el.querySelector('x-mobit-table-component');
+// if (component) {
+//   component.projectsData = mockProjectsData;
+// }
+```
+
+**Why?** If you deploy with this active, the component will render mock data instead of real ServiceNow data on your instance.
+
+### Before Committing:
+1. Open `example/element.js`
+2. Comment out lines that assign `mockProjectsData` to the component
+3. Keep the import statement (it won't hurt but won't be used)
+4. Commit and push to GitHub
+5. For **local development**, uncomment these lines again to see the demo
+
+---
+
 ## 🚢 Deploying to ServiceNow
 
 ### Prerequisites
@@ -159,6 +185,11 @@ initialState: {
    - Instance: `mobizitincdemo10.service-now.com`
    - Username: Your ServiceNow username
    - Password: Your ServiceNow password
+
+### Pre-Deployment Checklist
+- [ ] Mock data is commented out in `example/element.js`
+- [ ] Component receives data via `projectsData` property from UI Builder
+- [ ] HTTP effects configured to fetch real data (optional - if connecting to API)
 
 ### Deploy Command
 ```bash

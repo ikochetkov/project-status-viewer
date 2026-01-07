@@ -195,9 +195,16 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 	const activeFilterKey = `${projectNum}-activefilter`;
 	const showActiveOnly = expandedRows[activeFilterKey] !== false; // default true
 
-	const milestonesCount = Array.isArray(project.milestones) ? project.milestones.length : 0;
-	const issuesCount = Array.isArray(project.issues) ? project.issues.length : 0;
-	const risksCount = Array.isArray(project.risks) ? project.risks.length : 0;
+	// Calculate counts based on filter
+	const milestonesCount = Array.isArray(project.milestones) 
+		? project.milestones.filter(m => !showActiveOnly || isActiveFlag(m.active)).length 
+		: 0;
+	const issuesCount = Array.isArray(project.issues) 
+		? project.issues.filter(i => !showActiveOnly || isActiveFlag(i.active)).length 
+		: 0;
+	const risksCount = Array.isArray(project.risks) 
+		? project.risks.filter(r => !showActiveOnly || isActiveFlag(r.active)).length 
+		: 0;
 	const historyCount = Array.isArray(project.status_history) ? project.status_history.length : 0;
 
 	const tabs = [
@@ -209,39 +216,38 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 	];
 
 		const getTabContent = (tabId) => {
+		console.log('Project data for Details tab:', {
+			project_number: project.project_number,
+			executive_summary: project.executive_summary,
+			achievements_last_week: project.achievements_last_week,
+			key_activities_next_week: project.key_activities_next_week,
+			comments: project.comments
+		});
 		switch(tabId) {
 			case 'details':
 				return (
 					<div className="tab-content details-content">
 							<div className="details-layout">
 								<div className="details-left">
-									{project.executive_summary && (
-										<div className="section">
-											<div className="section-title">Executive Summary</div>
-											<div className="section-body">{cleanHtml(project.executive_summary)}</div>
-										</div>
-									)}
+									<div className="section">
+										<div className="section-title">Executive Summary</div>
+										<div className="section-body" innerHTML={project.executive_summary || '—'} />
+									</div>
 								
-									{project.achievements_last_week && (
-										<div className="section">
-											<div className="section-title">Achievements</div>
-											<div className="section-body">{cleanHtml(project.achievements_last_week)}</div>
-										</div>
-									)}
+									<div className="section">
+										<div className="section-title">Achievements</div>
+										<div className="section-body" innerHTML={project.achievements_last_week || '—'} />
+									</div>
 								
-									{project.key_activities_next_week && (
-										<div className="section">
-											<div className="section-title">Key Planned Activities</div>
-											<div className="section-body">{cleanHtml(project.key_activities_next_week)}</div>
-										</div>
-									)}
+									<div className="section">
+										<div className="section-title">Key Planned Activities</div>
+										<div className="section-body" innerHTML={project.key_activities_next_week || '—'} />
+									</div>
 								
-									{project.comments && (
-										<div className="section">
-											<div className="section-title">Comments</div>
-											<div className="section-body">{cleanHtml(project.comments)}</div>
-										</div>
-									)}
+									<div className="section">
+										<div className="section-title">Comments</div>
+										<div className="section-body" innerHTML={project.comments || '—'} />
+									</div>
 								</div>
 
 								<div className="details-right">
@@ -266,19 +272,44 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 											)}
 										</div>
 
-										<div className="effort-kpi-grid">
+										<div className="effort-kpi-grid effort-kpi-grid-planned">
 											<div className="effort-kpi">
 												<div className="effort-kpi-label">Planned Effort (SOW)</div>
-												<div className="effort-kpi-value">{project.x_mobit_spm_enh_planned_effort_sow || '—'} h</div>
+												<div className="effort-kpi-value effort-kpi-value-highlighted">{project.x_mobit_spm_enh_planned_effort_sow || '—'} h</div>
+											</div>
+										</div>
+
+										<div className="effort-kpi-grid">
+											<div className="effort-kpi">
+												<div className="tooltip-wrapper">
+													<div className="effort-kpi-label">Allocated Effort</div>
+													<div className="tooltip-content">SUM of hours assigned to all project participants to date</div>
+												</div>
+												<div className="effort-kpi-value">{project.x_mobit_spm_enh_allocated_effort || '—'} h</div>
 											</div>
 											<div className="effort-kpi">
-												<div className="effort-kpi-label">Actual Effort</div>
+												<div className="tooltip-wrapper">
+													<div className="effort-kpi-label">Actual Effort</div>
+													<div className="tooltip-content">Hours which have been recorded and approved</div>
+												</div>
 												<div className="effort-kpi-value">{project.x_mobit_spm_enh_actual_effort || '—'} h</div>
 											</div>
-											<div className="effort-kpi">
+										<div className="effort-kpi">
+											<div className="tooltip-wrapper">
 												<div className="effort-kpi-label">Remaining Effort</div>
-												<div className="effort-kpi-value">{project.u_remaining_effort || '—'} h</div>
+												<div className="tooltip-content">Allocated Effort - Actual Effort</div>
 											</div>
+											{(() => {
+												const value = project.u_remaining_effort;
+												const numValue = Number(value);
+												const isNegative = Number.isFinite(numValue) && numValue < 0;
+												return (
+													<div className={`effort-kpi-value ${isNegative ? 'bad' : ''}`}>
+														{value || '—'} h
+													</div>
+												);
+											})()}
+										</div>
 											<div className="effort-kpi">
 												<div className="effort-kpi-label">Unapproved Effort</div>
 												{(() => {

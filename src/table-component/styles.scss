@@ -683,9 +683,7 @@ now-icon.status-create-icon:focus-visible {
 /* Tooltip Styles */
 .tooltip-wrapper {
 	position: relative;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	display: inline-block;
 	cursor: help;
 
 	&:hover .tooltip-content {
@@ -1306,10 +1304,32 @@ now-icon.status-create-icon:focus-visible {
 	gap: 14px;
 }
 
+.effort-kpi-grid-planned {
+	grid-template-columns: 1fr;
+}
+
+.effort-kpi-grid-planned .effort-kpi-label {
+	background-color: var(--primary-container);
+	padding: 2px;
+	border-radius: var(--radius-xs);
+	display: inline-flex;
+	width: fit-content;
+}
+
+.effort-kpi-value-highlighted {
+	display: inline-flex;
+	width: fit-content;
+}
+
+.effort-kpi-grid-secondary {
+	margin-top: 16px;
+}
+
 .effort-kpi {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	margin-bottom: 15px;
 }
 
 .planned-end-row {
@@ -1523,6 +1543,32 @@ now-icon.status-create-icon:focus-visible {
 	color: var(--on-surface);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-normal);
+}
+
+.html-content {
+	margin: 0;
+	padding: 0;
+	display: block;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.html-content p {
+	margin: 0 0 12px 0;
+	padding: 0;
+	color: var(--on-surface);
+}
+
+.html-content ul {
+	margin: 0 0 12px 0;
+	padding-left: 20px;
+	color: var(--on-surface);
+}
+
+.html-content li {
+	margin: 0 0 6px 0;
+	padding: 0;
+	color: var(--on-surface);
 }
 
 .details-grid {

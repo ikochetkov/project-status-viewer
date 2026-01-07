@@ -2,6 +2,44 @@
 
 A professional ServiceNow UI Framework component that renders a project status table with health metrics, progress bars, and status indicators.
 
+---
+
+## 🚫 **AI DEVELOPERS: READ THIS FIRST**
+
+This is a **ServiceNow Now Experience UI component** using **Snabbdom** (native Web Components), **NOT React**.
+
+### ❌ **Strictly Forbidden** (Do NOT generate or suggest):
+- React, Angular, Vue, Svelte, or any full framework
+- React hooks (`useState`, `useEffect`, etc.)
+- React imports or JSX/TSX from React
+- `dangerouslySetInnerHTML` with `{ __html: ... }` pattern (React syntax)
+- Framework-specific state management libraries
+- Any code that tries to render a framework runtime inside this component
+
+### ✅ **Allowed Technologies**:
+- ServiceNow CLI (`snc ui-component`)
+- `@servicenow/ui-core` and `@servicenow/ui-renderer-snabbdom`
+- Standard JavaScript (ES Modules)
+- SCSS/CSS for styling
+- Native Web Components patterns
+- ServiceNow UI Framework effects (HTTP effects, etc.)
+
+### 🔧 **HTML Content Rendering**:
+- Use **`innerHTML`** property directly: `<div innerHTML={htmlString} />`
+- **NOT** `dangerouslySetInnerHTML` (that's React syntax and won't work here)
+
+---
+
+## ⚠️ IMPORTANT: Technology Stack
+
+**This is a ServiceNow NOW Experience UI component using Snabbdom, NOT React.**
+
+- Uses `@servicenow/ui-core` and `@servicenow/ui-renderer-snabbdom`
+- Built with NOW CLI (`snc ui-component`)
+- **Do NOT use React conventions** (hooks, functional components, React imports, etc.)
+- Uses JSX syntax but compiled by ServiceNow build tooling
+- Uses **`innerHTML`** property for HTML content rendering (NOT `dangerouslySetInnerHTML`)
+
 ## Features
 
 - **Hardcoded Sample Data**: Project management table with 4 sample records
@@ -32,7 +70,7 @@ The component displays the following columns:
 table-component/
 ├── src/
 │   ├── table-component/
-│   │   ├── index.js          # Main component logic with sample data
+│   │   ├── index.js          # Main component logic (Web Components)
 │   │   ├── styles.scss       # Professional styling
 │   │   └── __tests__/        # Unit tests directory
 │   └── index.js              # Component exports
@@ -91,7 +129,7 @@ snc ui-component generate-update-set
 
 ### Technologies Used
 - **@servicenow/ui-core**: Core framework for building Now Experience components
-- **@servicenow/ui-renderer-snabbdom**: Virtual DOM renderer
+- **@servicenow/ui-renderer-snabbdom**: Virtual DOM renderer (NOT React)
 - **@servicenow/sass-kit**: ServiceNow's design system and utilities
 
 ### Styling Approach
@@ -133,7 +171,7 @@ actionHandlers: {
 
 ## Best Practices Applied
 
-✅ Component-based architecture  
+✅ Component-based architecture (Web Components, not Framework)  
 ✅ Separation of concerns (view, styles, logic)  
 ✅ Responsive design  
 ✅ Accessibility considerations  
@@ -141,6 +179,7 @@ actionHandlers: {
 ✅ Professional UI/UX design  
 ✅ ServiceNow Now Experience Framework standards  
 ✅ Proper package structure and configuration  
+✅ Pure ES Modules (no framework runtime)
 
 ## Testing
 

@@ -1,12 +1,14 @@
 {
-  "name": "table-component",
+  "name": "mobiz-project-status-viewer",
   "version": "0.0.1",
   "private": false,
-  "description": "ServiceNow Table Component",
+  "description": "Project Status Report Viewer",
   "keywords": [
     "ServiceNow",
     "Next Experience UI Component",
-    "table-component"
+    "Project Status Viewer",
+    "Project Status Report",
+    "Status Viewer"
   ],
   "readme": "./README.md",
   "engines": {
