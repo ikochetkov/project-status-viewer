@@ -1,6 +1,6 @@
 {
   "components": {
-    "mobiz-project-status-viewer": {
+    "x-mobit-project-status-viewer": {
       "innerComponents": [],
       "uiBuilder": {
         "associatedTypes": [
