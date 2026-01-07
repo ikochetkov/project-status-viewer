@@ -7,7 +7,7 @@
           "global.core",
           "global.landing-page"
         ],
-        "label": "Project Status Viewer",
+        "label": "Mobiz Project Status Viewer",
         "tileIcon": "./tile-icon/generic-tile-icon.svg",
         "description": "View project status, health metrics, and progress tracking",
         "category": "primitives"
