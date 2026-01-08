@@ -297,7 +297,7 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 										<div className="effort-kpi">
 											<div className="tooltip-wrapper">
 												<div className="effort-kpi-label">Remaining Effort</div>
-												<div className="tooltip-content">Allocated Effort - Actual Effort</div>
+												<div className="tooltip-content">Planned Effort(SOW) - Actual Hours</div>
 											</div>
 											{(() => {
 												const value = project.u_remaining_effort;
