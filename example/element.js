@@ -12,5 +12,5 @@ el.innerHTML = `
 // ⚠️ COMMENTED OUT for production - uncomment for local development testing
 const component = el.querySelector('x-mobit-table-component');
 if (component) {
-  component.projectsData = [];
+  component.projectsData = mockProjectsData;
 }

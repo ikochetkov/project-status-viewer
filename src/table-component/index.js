@@ -392,7 +392,7 @@ const getSortedRows = (rows, tabId) =>
 												<div className="effort-kpi-value">{project.x_mobit_spm_enh_effort_estimated_to_complete || '—'} h</div>
 											</div>
 
-
+&nbsp;
 											<div className="effort-kpi">
 												<div className="tooltip-wrapper">
 													<div className="effort-kpi-label">Estimated At Completion</div>
@@ -401,7 +401,7 @@ const getSortedRows = (rows, tabId) =>
 												<div className="effort-kpi-value">{parseInt(project.x_mobit_spm_enh_effort_estimated_to_complete)+parseInt(project.x_mobit_spm_enh_actual_effort) || '—'} h</div>
 											</div>
 
-											
+				&nbsp;							
 											
 											<div className="effort-kpi">
 												<div className="tooltip-wrapper">
@@ -410,7 +410,15 @@ const getSortedRows = (rows, tabId) =>
 												</div>
 												<div className="effort-kpi-value">{project.x_mobit_spm_enh_actual_effort || '—'} h</div>
 											</div>
-										<div className="effort-kpi">
+								
+											
+										</div>
+
+										<div className="effort-divider"></div>
+
+
+									<div className='effort-kpi-grid'>
+												<div className="effort-kpi">
 											<div className="tooltip-wrapper">
 												<div className="effort-kpi-label">Remaining Effort</div>
 												<div className="tooltip-content">Planned Effort(SOW) - Actual Hours</div>
@@ -426,12 +434,6 @@ const getSortedRows = (rows, tabId) =>
 												);
 											})()}
 										</div>
-											
-										</div>
-
-										<div className="effort-divider"></div>
-
-									<div className='effort-kpi-grid'>
 											<div className="effort-kpi">
 												<div className="effort-kpi-label">Unapproved Effort</div>
 												{(() => {
