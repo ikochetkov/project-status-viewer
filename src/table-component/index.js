@@ -272,8 +272,23 @@ const renderAccordionTabs = (project, expandedRows, expandedRowsHelpers) => {
 	// -------- Sorting state per tab --------
 const sortStateKey = (tabId) => `${projectNum}-${tabId}-sort`;
 
-const getSortState = (tabId) =>
-	expandedRows[sortStateKey(tabId)] || { key: null, dir: null };
+const getSortState = (tabId) => {
+	const current = expandedRows[sortStateKey(tabId)];
+	if (current && current.key) return current;
+
+	// Default sorting per tab
+	// For milestones, issues, risks: default ascending by `number`
+	if (['milestones', 'issues', 'risks'].includes(tabId)) {
+		return { key: 'number', dir: 'asc' };
+	}
+
+	// For history we want newest first (descending by `number`)
+	if (tabId === 'history') {
+		return { key: 'number', dir: 'desc' };
+	}
+
+	return { key: null, dir: null };
+};
 
 const renderSortIcon = (tabId, colKey) => {
 	const s = getSortState(tabId);
@@ -372,7 +387,7 @@ const getSortedRows = (rows, tabId) =>
 											<div className="effort-kpi">
 												<div className="tooltip-wrapper">
 													<div className="effort-kpi-label">Effort Estimated to Complete</div>
-													<div className="tooltip-content">SUM of hours assigned to all project participants to date</div>
+													<div className="tooltip-content">Entered by PM on Status Report page</div>
 												</div>
 												<div className="effort-kpi-value">{project.x_mobit_spm_enh_effort_estimated_to_complete || '—'} h</div>
 											</div>
@@ -381,7 +396,7 @@ const getSortedRows = (rows, tabId) =>
 											<div className="effort-kpi">
 												<div className="tooltip-wrapper">
 													<div className="effort-kpi-label">Estimated At Completion</div>
-													{/* <div className="tooltip-content">SUM of hours assigned to all project participants to date</div> */}
+													<div className="tooltip-content">Actual Effort + Effort Estimated to Complete</div>
 												</div>
 												<div className="effort-kpi-value">{parseInt(project.x_mobit_spm_enh_effort_estimated_to_complete)+parseInt(project.x_mobit_spm_enh_actual_effort) || '—'} h</div>
 											</div>
@@ -442,7 +457,7 @@ const getSortedRows = (rows, tabId) =>
 													);
 												})()}
 											</div>
-
+<div className="tooltip-wrapper">
 										<div className="effort-kpi-single">
 											<div className="effort-kpi-label">Date Estimated At Completion</div>
 												{(() => {
@@ -458,6 +473,8 @@ const getSortedRows = (rows, tabId) =>
 													);
 												})()}
 										</div>
+										<div className="tooltip-content">Planned End Date from WBS level (adjusted by PM to reflect real duration)</div>
+									</div>
 									</div>
 
 										<div className="effort-divider"></div>

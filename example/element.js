@@ -1,4 +1,5 @@
 import '../src/table-component';
+import { mockProjectsData } from './mockData';
 
 
 const el = document.createElement('DIV');

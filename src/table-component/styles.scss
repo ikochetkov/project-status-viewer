@@ -1724,3 +1724,12 @@ now-icon.status-create-icon:focus-visible {
 		grid-template-columns: 1fr;
 	}
 }
+
+/* Make sortable column headers show pointer cursor */
+.th-sort {
+	cursor: pointer;
+	user-select: none;
+}
+.th-sort:hover {
+	text-decoration: underline;
+}
