@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "package": "@servicenow/now-icon",
+    "version": "19.8.2-ecd",
+    "totalUniqueIcons": 335,
+    "totalVariants": 2680,
+    "availableSizes": [12, 16, 24, 32],
+    "availableStyles": ["Fill", "Outline"],
+    "generatedAt": "2025-12-12"
+  },
+  "description": "Complete list of all icons available in ServiceNow's now-icon package",
+  "naming_convention": {
+    "pattern": "[baseName][Style][Size]",
+    "example": "circleCheckFill16",
+    "parts": {
+      "baseName": "Describes the icon (camelCase, e.g., 'circleCheck')",
+      "style": "Either 'Fill' (solid) or 'Outline' (stroke)",
+      "size": "One of: 12, 16, 24, 32 pixels"
+    }
+  },
+  "usage": {
+    "javascript_import": "import { circleCheckFill16 } from '@servicenow/now-icon';",
+    "component_template": "<now-icon icon=\"circle-check-fill\" size=\"md\"></now-icon>",
+    "note": "Component attributes use kebab-case, but JavaScript exports use camelCase"
+  },
+  "icon_count_by_first_letter": {
+    "A": 24,
+    "B": 12,
+    "C": 47,
+    "D": 11,
+    "E": 8,
+    "F": 9,
+    "G": 2,
+    "H": 8,
+    "I": 13,
+    "J": 0,
+    "K": 3,
+    "L": 8,
+    "M": 13,
+    "N": 3,
+    "O": 12,
+    "P": 11,
+    "Q": 2,
+    "R": 15,
+    "S": 21,
+    "T": 17,
+    "U": 11,
+    "V": 8,
+    "W": 9,
+    "X": 1,
+    "Y": 3,
+    "Z": 1
+  },
+  "sample_icons": [
+    "addItemAbove",
+    "arrowDown",
+    "arrowUp",
+    "bellSlash",
+    "circleCheck",
+    "circleExclamation",
+    "circleInfo",
+    "circleQuestion",
+    "delete",
+    "download",
+    "edit",
+    "exclamation",
+    "file",
+    "filter",
+    "folder",
+    "gear",
+    "hamburger",
+    "lock",
+    "menu",
+    "pencil",
+    "refresh",
+    "search",
+    "settings",
+    "trash",
+    "unlock",
+    "upload",
+    "user",
+    "userGroup",
+    "video",
+    "warning"
+  ],
+  "files_generated": [
+    {
+      "filename": "SERVICENOW_ICONS_README.md",
+      "description": "Start here - Overview and usage guide",
+      "size": "4.0 KB"
+    },
+    {
+      "filename": "SERVICENOW_ICONS_LIST.txt",
+      "description": "Complete list of all 2,680 icon variants",
+      "size": "49 KB"
+    },
+    {
+      "filename": "ICONS_COMPLETE_LIST.md",
+      "description": "List of 335 unique icon base names",
+      "size": "4.2 KB"
+    },
+    {
+      "filename": "SERVICENOW_ICONS_REFERENCE.md",
+      "description": "Comprehensive reference with examples and aliases",
+      "size": "5.1 KB"
+    },
+    {
+      "filename": "icons.json",
+      "description": "This file - JSON format for programmatic access",
+      "size": "~5 KB"
+    }
+  ]
+}

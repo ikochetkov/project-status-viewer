@@ -1,0 +1,40 @@
+{
+  "name": "mobiz-project-status-viewer",
+  "version": "0.0.1",
+  "private": false,
+  "description": "Mobiz Project Status Report Viewer",
+  "keywords": [
+    "ServiceNow",
+    "Next Experience UI Component",
+    "Project Status Viewer",
+    "Project Status Report",
+    "Status Viewer"
+  ],
+  "readme": "./README.md",
+  "engines": {
+    "node": ">=22"
+  },
+  "module": "src/index.js",
+  "scripts": {
+    "dev": "snc ui-component develop",
+    "build": "snc ui-component build",
+    "start": "snc ui-component develop"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.6",
+    "@servicenow/now-avatar": "^19.8.2-ecd",
+    "@servicenow/now-icon": "^19.8.2-ecd",
+    "@servicenow/now-textarea": "^19.8.2-ecd",
+    "@servicenow/now-toggle": "^19.8.2-ecd",
+    "@servicenow/sass-kit": "latest",
+    "@servicenow/ui-core": "24.1.1",
+    "@servicenow/ui-renderer-snabbdom": "24.1.1"
+  },
+  "devDependencies": {
+    "@babel/runtime": "7.25.7",
+    "ajv": "^6.12.6",
+    "sass": "1.53.0"
+  }
+}

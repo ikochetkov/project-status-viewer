@@ -1,0 +1,161 @@
+export const mockProjectsData = [
+  {
+    project_number: 'PRJ0002301',
+    projectSysID: 'sys_1',
+    projectName: 'Network Upgrade Phase 1 #1',
+    projectUrl: 'https://mobizdev.service-now.com/pm_project.do?sys_id=1111e3eac3493ad0ad36b9ff0501315b',
+    company: 'Allcare Medical',
+    projectManagerName: 'Ryan Sanchez',
+    startDate: '2025-01-10',
+    endDate: '2025-09-30',
+    percentComplete: '3%',
+    statusReportNumber: 'PRJSTAT5001',
+    statusReportSysID: '1111be57d8326729068537cdfeeaad385',
+    statusDate: '2026-01-02',
+    overallHealth: 'Green',
+    cost: 'Green',
+    scope: 'Yellow',
+    schedule: 'Green',
+    resources: 'Green',
+    effortUtilized: '60%',
+    x_mobit_spm_enh_planned_effort_sow: '120',
+    x_mobit_spm_enh_effort_estimated_to_complete: '100',
+    x_mobit_spm_enh_actual_effort: '70',
+    u_remaining_effort: '49',
+    milestones: [
+      {
+        number: 'MS-1001',
+        short_description: 'Site survey completed',
+        state: 'On Track',
+        due_date: '2025-02-15',
+        end_date: '2025-02-14',
+        percent_complete: '100%',
+        comments: 'All sites surveyed',
+        url: '',
+        active: true
+      },
+      {
+        number: 'MS-1002',
+        short_description: 'Hardware delivery',
+        state: 'At Risk',
+        due_date: '2025-04-01',
+        end_date: '2025-03-30',
+        percent_complete: '40%',
+        comments: 'Some shipments delayed',
+        url: '',
+        active: true
+      }
+    ],
+    risks: [
+      {
+        number: 'R-2001',
+        short_description: 'Vendor lead time increase',
+        u_risk_issue_type: 'Schedule',
+        impact: 'High',
+        mitigation: 'Source alternate vendor and expedite critical orders',
+        risk_state: 'Open',
+        assigned_to: 'Vendor Manager',
+        sys_created_on: '2025-01-05',
+        due_date: '2025-03-01',
+        url: '',
+        active: true
+      },
+      {
+        number: 'R-2002',
+        short_description: 'Resource availability',
+        u_risk_issue_type: 'Resources',
+        impact: 'Medium',
+        mitigation: 'Reassign contractors',
+        risk_state: 'Mitigated',
+        assigned_to: 'PMO Lead',
+        sys_created_on: '2025-01-08',
+        due_date: '2025-02-28',
+        url: '',
+        active: true
+      }
+    ],
+    issues: [
+      {
+        number: 'I-3001',
+        short_description: 'Configuration rollback on site A',
+        impact: 'High',
+        priority: 'P1',
+        state: 'Open',
+        assigned_to: 'Site Engineer',
+        sys_created_on: '2025-01-20',
+        due_date: '2025-01-22',
+        url: '',
+        active: true
+      },
+      {
+        number: 'I-3002',
+        short_description: 'Access credentials delay',
+        impact: 'Low',
+        priority: 'P3',
+        state: 'Closed',
+        assigned_to: 'Security Admin',
+        sys_created_on: '2025-01-10',
+        due_date: '2025-01-12',
+        url: '',
+        active: false
+      }
+    ],
+    status_history: [
+      {
+        number: 'SH-4001',
+        as_on: '2025-01-01',
+        overall_health: 'Green',
+        schedule: 'Green',
+        cost: 'Green',
+        resources: 'Green',
+        percent_complete: '10%',
+        u_effort_utilized: '8%',
+        url: ''
+      },
+      {
+        number: 'SH-4002',
+        as_on: '2025-02-01',
+        overall_health: 'Yellow',
+        schedule: 'Yellow',
+        cost: 'Green',
+        resources: 'Yellow',
+        percent_complete: '25%',
+        u_effort_utilized: '22%',
+        url: ''
+      }
+    ],
+    time_cards_submitted_hours: 12,
+    time_cards_submitted_link: '',
+    comments: '',
+    schedule_comments: '',
+    cost_comments: '',
+    resource_comments: '',
+    scope_comments: '',
+    end_date: '2025-09-30',
+    executive_summary: '',
+    achievements_last_week: '',
+    key_activities_next_week: '',
+    u_time_elapsed: '65',
+    statusReportUrl: ''
+  },
+  {
+    project_number: 'PRJ0002302',
+    projectSysID: 'sys_2',
+    projectName: 'Network Upgrade Phase 1 #2',
+    startDate: '2025-01-10',
+    endDate: '2025-09-30',
+    percentComplete: '6%',
+    statusDate: '2026-01-03',
+    overallHealth: 'Yellow',
+    cost: 'Green',
+    scope: 'Yellow',
+    schedule: 'Yellow',
+    resources: 'Green',
+    effortUtilized: '60%',
+    milestones: [],
+    risks: [],
+    issues: [],
+    status_history: [],
+    time_cards_submitted_hours: 14
+  }
+];
