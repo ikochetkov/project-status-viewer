@@ -1143,7 +1143,7 @@ const view = (state, {updateState}) => {
 								<div className="project-info">
 									<div className="project-details">
 										<div className="project-header">
-											
+											<span className="project-id">{row.project_number}</span>
 											{row.projectUrl && (
 												<a
 													href={row.projectUrl}
@@ -1153,8 +1153,7 @@ const view = (state, {updateState}) => {
 													aria-label={`Open ${row.project_number} project`}
 													title="Open project"
 												>
-													{/* <now-icon icon="open-link-right-outline" size="sm"></now-icon> */}
-													<span className="project-id">{row.project_number}</span>
+													<now-icon icon="open-link-right-outline" size="sm"></now-icon>
 												</a>
 											)}
 											{row.company && <span className="project-company">{row.company}</span>}
