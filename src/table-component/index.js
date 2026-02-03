@@ -376,12 +376,44 @@ const getSortedRows = (rows, tabId) =>
 											)}
 										</div>
 
-										<div className="effort-kpi-grid effort-kpi-grid-planned">
+									<div className="effort-kpi-grid">
+										
+											<div className="effort-kpi-grid effort-kpi-grid-planned">
 											<div className="effort-kpi">
 												<div className="effort-kpi-label">Planned Effort (SOW)</div>
 												<div className="effort-kpi-value effort-kpi-value-highlighted">{project.x_mobit_spm_enh_planned_effort_sow || '—'} h</div>
 											</div>
 										</div>
+
+											<div className="effort-kpi">
+												<div className="tooltip-wrapper">
+													<div className="effort-kpi-label">Actual Effort</div>
+													<div className="tooltip-content">Hours which have been recorded and approved</div>
+												</div>
+												<div className="effort-kpi-value">{project.x_mobit_spm_enh_actual_effort || '—'} h</div>
+											</div>
+
+
+												<div className="effort-kpi">
+											<div className="tooltip-wrapper">
+												<div className="effort-kpi-label">Remaining Effort</div>
+												<div className="tooltip-content">Planned Effort(SOW) - Actual Hours</div>
+											</div>
+											{(() => {
+												const value = project.u_remaining_effort;
+												const numValue = Number(value);
+												const isNegative = Number.isFinite(numValue) && numValue < 0;
+												return (
+													<div className={`effort-kpi-value ${isNegative ? 'bad' : ''}`}>
+														{value || '—'} h
+													</div>
+												);
+											})()}
+										</div>
+
+
+										</div>
+										<div className="effort-divider"></div>
 
 										<div className="effort-kpi-grid">
 											<div className="effort-kpi">
@@ -403,13 +435,7 @@ const getSortedRows = (rows, tabId) =>
 
 				&nbsp;							
 											
-											<div className="effort-kpi">
-												<div className="tooltip-wrapper">
-													<div className="effort-kpi-label">Actual Effort</div>
-													<div className="tooltip-content">Hours which have been recorded and approved</div>
-												</div>
-												<div className="effort-kpi-value">{project.x_mobit_spm_enh_actual_effort || '—'} h</div>
-											</div>
+										
 								
 											
 										</div>
@@ -418,22 +444,7 @@ const getSortedRows = (rows, tabId) =>
 
 
 									<div className='effort-kpi-grid'>
-												<div className="effort-kpi">
-											<div className="tooltip-wrapper">
-												<div className="effort-kpi-label">Remaining Effort</div>
-												<div className="tooltip-content">Planned Effort(SOW) - Actual Hours</div>
-											</div>
-											{(() => {
-												const value = project.u_remaining_effort;
-												const numValue = Number(value);
-												const isNegative = Number.isFinite(numValue) && numValue < 0;
-												return (
-													<div className={`effort-kpi-value ${isNegative ? 'bad' : ''}`}>
-														{value || '—'} h
-													</div>
-												);
-											})()}
-										</div>
+											
 											<div className="effort-kpi">
 												<div className="effort-kpi-label">Unapproved Effort</div>
 												{(() => {
@@ -459,8 +470,11 @@ const getSortedRows = (rows, tabId) =>
 													);
 												})()}
 											</div>
+
+&nbsp;
 <div className="tooltip-wrapper">
-										<div className="effort-kpi-single">
+
+										<div className="effort-kpi">
 											<div className="effort-kpi-label">Date Estimated At Completion</div>
 												{(() => {
 													const plannedEndValue = getPlannedEndDateValue(project) || project.endDate;
@@ -1126,7 +1140,7 @@ const view = (state, {updateState}) => {
 								<div className="project-info">
 									<div className="project-details">
 										<div className="project-header">
-											<span className="project-id">{row.project_number}</span>
+											
 											{row.projectUrl && (
 												<a
 													href={row.projectUrl}
@@ -1136,7 +1150,8 @@ const view = (state, {updateState}) => {
 													aria-label={`Open ${row.project_number} project`}
 													title="Open project"
 												>
-													<now-icon icon="open-link-right-outline" size="sm"></now-icon>
+													{/* <now-icon icon="open-link-right-outline" size="sm"></now-icon> */}
+													<span className="project-id">{row.project_number}</span>
 												</a>
 											)}
 											{row.company && <span className="project-company">{row.company}</span>}
