@@ -381,7 +381,7 @@ const getSortedRows = (rows, tabId) =>
 											<div className="effort-kpi-grid effort-kpi-grid-planned">
 											<div className="effort-kpi">
 												<div className="effort-kpi-label">Planned Effort (SOW)</div>
-												<div className="effort-kpi-value effort-kpi-value-highlighted">{project.x_mobit_spm_enh_planned_effort_sow || '—'} h</div>
+												<div className="effort-kpi-value effort-kpi-value-highlighted">{project.x_mobit_spm_enh_planned_effort_sow ? project.x_mobit_spm_enh_planned_effort_sow+'h': '—'} </div>
 											</div>
 										</div>
 
@@ -390,7 +390,7 @@ const getSortedRows = (rows, tabId) =>
 													<div className="effort-kpi-label">Actual Effort</div>
 													<div className="tooltip-content">Hours which have been recorded and approved</div>
 												</div>
-												<div className="effort-kpi-value">{project.x_mobit_spm_enh_actual_effort || '—'} h</div>
+												<div className="effort-kpi-value">{project.x_mobit_spm_enh_actual_effort ? project.x_mobit_spm_enh_actual_effort+'h' : '—'} </div>
 											</div>
 
 
@@ -405,7 +405,7 @@ const getSortedRows = (rows, tabId) =>
 												const isNegative = Number.isFinite(numValue) && numValue < 0;
 												return (
 													<div className={`effort-kpi-value ${isNegative ? 'bad' : ''}`}>
-														{value || '—'} h
+														{value ?value+'h' : '—'} 
 													</div>
 												);
 											})()}
@@ -421,7 +421,9 @@ const getSortedRows = (rows, tabId) =>
 													<div className="effort-kpi-label">Effort Estimated to Complete</div>
 													<div className="tooltip-content">Entered by PM on Status Report page</div>
 												</div>
-												<div className="effort-kpi-value">{project.x_mobit_spm_enh_effort_estimated_to_complete || '—'} h</div>
+												<div className="effort-kpi-value">{project.x_mobit_spm_enh_effort_estimated_to_complete 
+  ? project.x_mobit_spm_enh_effort_estimated_to_complete + ' h'
+  : '—'} </div>
 											</div>
 
 &nbsp;
@@ -430,7 +432,8 @@ const getSortedRows = (rows, tabId) =>
 													<div className="effort-kpi-label">Estimated At Completion</div>
 													<div className="tooltip-content">Actual Effort + Effort Estimated to Complete</div>
 												</div>
-												<div className="effort-kpi-value">{parseInt(project.x_mobit_spm_enh_effort_estimated_to_complete)+parseInt(project.x_mobit_spm_enh_actual_effort) || '—'} h</div>
+												<div className="effort-kpi-value">{(parseInt(project.x_mobit_spm_enh_effort_estimated_to_complete||0)+parseInt(project.x_mobit_spm_enh_actual_effort||0)) ? (parseInt(project.x_mobit_spm_enh_effort_estimated_to_complete||0)+parseInt(project.x_mobit_spm_enh_actual_effort||0)+'h'): '—'} </div>
+											
 											</div>
 
 				&nbsp;							
