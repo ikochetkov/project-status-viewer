@@ -1,13 +1,13 @@
 {
   "components": {
-    "x-mobit-table-component": {
+    "x-mobit-pmo-status-component": {
       "innerComponents": [],
       "uiBuilder": {
         "associatedTypes": [
           "global.core",
           "global.landing-page"
         ],
-        "label": "Project Status Viewer",
+        "label": "Mobiz Project Status Viewer",
         "tileIcon": "./tile-icon/generic-tile-icon.svg",
         "description": "View project status, health metrics, and progress tracking",
         "category": "primitives"
@@ -16,10 +16,11 @@
         {
           "name": "projectsData",
           "label": "Projects Data",
-          "description": "Array of project data from data broker"
+          "description": "Array of project data from data broker",
+          "fieldType": "json"
         }
       ]
     }
   },
-  "scopeName": "x_mobit_spm_sv"
+  "scopeName": "x_mobit_spm_pmo_s"
 }

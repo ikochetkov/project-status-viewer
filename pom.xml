@@ -9,8 +9,8 @@
         <version>5.1.0.1</version>
     </parent>
 
-    <artifactId>table-component</artifactId>
-    <description>ServiceNow Table Component</description>
+    <artifactId>x-mobit-pmo-status-component</artifactId>
+    <description>Mobiz Project Status Viewer</description>
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -20,7 +20,7 @@
     </scm>
 
     <properties>
-        <plugin.dir>com.table_component</plugin.dir>
+        <plugin.dir>com.x_mobit_pmo_status_component</plugin.dir>
         <sauce.tunnelId>${user.name}@localhost</sauce.tunnelId>
         <jenkins.credentials.saucelabs>tectonic-sauce-credentials</jenkins.credentials.saucelabs>
         <node.verify_cmd>run verify --if-present</node.verify_cmd>
