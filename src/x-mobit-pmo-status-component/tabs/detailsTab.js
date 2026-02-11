@@ -56,7 +56,7 @@ export const renderDetailsTab = (project) => {
 							)}
 						</div>
 
-						<div className="effort-kpi-grid">
+						<div className="effort-kpi-grid effort-kpi-grid-3col">
 							<div className="effort-kpi-grid effort-kpi-grid-planned">
 								<div className="effort-kpi">
 									<div className="effort-kpi-label">Planned Effort (SOW)</div>
@@ -83,7 +83,7 @@ export const renderDetailsTab = (project) => {
 
 						<div className="effort-divider"></div>
 
-						<div className="effort-kpi-grid">
+						<div className="effort-kpi-grid effort-kpi-grid-3col">
 							<div className="effort-kpi">
 								<div className="tooltip-wrapper">
 									<div className="effort-kpi-label">Effort Estimated to Complete</div>
@@ -109,7 +109,7 @@ export const renderDetailsTab = (project) => {
 
 						<div className="effort-divider"></div>
 
-						<div className="effort-kpi-grid">
+						<div className="effort-kpi-grid effort-kpi-grid-3col">
 							<div className="effort-kpi">
 								<div className="effort-kpi-label">Unapproved Effort</div>
 								<div className="effort-kpi-value-row">

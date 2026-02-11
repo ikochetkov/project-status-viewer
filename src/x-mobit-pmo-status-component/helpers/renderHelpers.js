@@ -67,7 +67,7 @@ export const renderProgressBar = (value, label, tooltipText) => {
 	);
 };
 
-export const renderProgressCircle = (value, tooltipText, colorClass) => {
+export const renderProgressCircle = (value, tooltipText, colorClass, extraClass) => {
 	const num = parsePercentNumber(value);
 	if (num === null) return <span className="empty-state">—</span>;
 	const isOver = num > 100;
@@ -75,7 +75,7 @@ export const renderProgressCircle = (value, tooltipText, colorClass) => {
 	const label = formatPercentLabel(value);
 	const circleClass = colorClass || (isOver ? 'is-over' : '');
 	return (
-		<span className="tooltip-wrapper tooltip-anchor-right" aria-label={`${tooltipText} ${label}`}>
+		<span className={`tooltip-wrapper tooltip-anchor-right ${extraClass || ''}`} aria-label={`${tooltipText} ${label}`}>
 			<div
 				className={`progress-circle progress-circle--sm ${circleClass}`}
 				style={{'--p': width}}

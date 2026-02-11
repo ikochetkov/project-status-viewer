@@ -752,6 +752,23 @@ now-icon.status-create-icon:focus-visible {
 	transform: none;
 }
 
+/* Tooltip below variant — for top-edge cells where upward tooltip gets clipped */
+.tooltip-wrapper.tooltip-below .tooltip-content {
+	bottom: auto;
+	top: 100%;
+	margin-bottom: 0;
+	margin-top: 8px;
+	min-width: 280px;
+	white-space: nowrap;
+}
+
+.tooltip-wrapper.tooltip-below .tooltip-content::after {
+	top: auto;
+	bottom: 100%;
+	border-top-color: transparent;
+	border-bottom-color: #1f2937;
+}
+
 /* Empty State Icons */
 .empty-icon {
 	font-size: var(--font-size-title-large);
@@ -908,7 +925,7 @@ now-icon.status-create-icon:focus-visible {
 	flex-direction: column;
 	padding: 24px;
 	margin: 0;
-	overflow-x: auto;
+	overflow-x: hidden;
 	max-width: 100%;
 	background-color: transparent;
 	border-top: 0;
@@ -1033,10 +1050,8 @@ now-icon.status-create-icon:focus-visible {
 }
 
 .tabs-body {
-	overflow-x: auto;
 	max-width: 100%;
-	min-width: 100%;
-	scrollbar-gutter: stable;
+	min-width: 0;
 }
 
 .tab-button {
@@ -1069,8 +1084,7 @@ now-icon.status-create-icon:focus-visible {
 	flex-direction: column;
 	gap: 20px;
 	animation: fadeIn var(--transition-short);
-	overflow-x: auto;
-	min-width: 100%;
+	min-width: 0;
 }
 
 .tab-content > p {
@@ -1224,11 +1238,10 @@ now-icon.status-create-icon:focus-visible {
 	gap: 24px;
 	max-height: 600px;
 	overflow-y: auto;
-	padding-right: 8px;
-	scrollbar-gutter: stable;
+	overflow-x: hidden;
 
 	&::-webkit-scrollbar {
-		width: 8px;
+		width: 6px;
 	}
 
 	&::-webkit-scrollbar-track {
@@ -1237,7 +1250,7 @@ now-icon.status-create-icon:focus-visible {
 
 	&::-webkit-scrollbar-thumb {
 		background: #d1d5db;
-		border-radius: 4px;
+		border-radius: 3px;
 
 		&:hover {
 			background: #9ca3af;
@@ -1262,7 +1275,7 @@ now-icon.status-create-icon:focus-visible {
 
 .details-layout {
 	display: grid;
-	grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
 	gap: 24px;
 	align-items: start;
 }
@@ -1312,7 +1325,8 @@ now-icon.status-create-icon:focus-visible {
 	text-decoration: none;
 	font-weight: var(--font-weight-medium);
 	font-size: var(--font-size-label-small);
-	white-space: nowrap;
+	white-space: normal;
+	text-align: right;
 }
 
 .status-report-link:hover {
@@ -1321,8 +1335,12 @@ now-icon.status-create-icon:focus-visible {
 
 .effort-kpi-grid {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 14px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px 24px;
+}
+
+.effort-kpi-grid-3col {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .effort-kpi-grid-planned {
@@ -1708,13 +1726,14 @@ now-icon.status-create-icon:focus-visible {
 		grid-template-columns: 1fr;
 	}
 
-	.effort-kpi-grid {
+	.effort-kpi-grid-3col {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
 @media (max-width: 520px) {
-	.effort-kpi-grid {
+	.effort-kpi-grid,
+	.effort-kpi-grid-3col {
 		grid-template-columns: 1fr;
 	}
 }

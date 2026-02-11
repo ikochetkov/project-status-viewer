@@ -257,7 +257,7 @@ export const view = (state, {updateState}) => {
 									{renderProgressCircle(row.percentComplete, 'Percent Complete', 'is-green')}
 								</td>
 								<td className="col-effort center">
-									{renderProgressCircle(row.effortUtilized, 'Effort Utilized = (Actual Effort / Allocated Effort) * 100')}
+									{renderProgressCircle(row.effortUtilized, 'Effort Utilized = (Actual Effort / Allocated Effort) * 100', '', 'tooltip-below')}
 								</td>
 							</tr>,
 							...(hasStatusReport(row.statusReportSysID) && expandedRows[row.project_number] ? [
