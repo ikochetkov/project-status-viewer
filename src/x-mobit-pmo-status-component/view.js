@@ -188,11 +188,12 @@ export const view = (state, {updateState}) => {
 													</div>
 												)}
 												{(row.startDate || row.endDate) && (
-													<div className="project-meta-item">
+													<div className="project-meta-item tooltip-wrapper">
 														<now-icon icon="calendar-outline" size="md" />
 														<span>
 															{row.startDate ? formatDateOnly(row.startDate) : '?'} – {row.endDate ? formatDateOnly(row.endDate) : '?'}
 														</span>
+														<div className="tooltip-content">Approved Start Date and Approved End Date from the Project</div>
 													</div>
 												)}
 											</div>
