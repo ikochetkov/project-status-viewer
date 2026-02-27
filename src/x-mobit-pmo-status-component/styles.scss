@@ -121,14 +121,18 @@
 
 .table-container {
 	background-color: var(--surface);
-	border: 1px solid var(--outline-variant);
 	width: 100%;
 	max-width: 100%;
 	overflow-x: auto;
 	overflow-y: auto;
+	position: relative;
+}
+
+.dashboard-list {
+	border: 1px solid var(--outline-variant);
 	border-radius: var(--radius-md);
 	box-shadow: var(--shadow-1);
-	position: relative;
+	overflow: hidden;
 }
 
 .project-table {
@@ -168,12 +172,6 @@
 	text-align: center;
 }
 
-.project-table th.col-expand {
-	padding: var(--space-4) var(--space-2);
-	width: 40px;
-	text-align: center;
-}
-
 /* Table Body (main project table only) */
 .project-table tbody tr {
 	transition: background-color var(--transition-short);
@@ -183,12 +181,7 @@
 	cursor: pointer;
 }
 
-.project-table tbody tr.project-row.expandable:hover .expand-btn {
-	background-color: var(--surface-variant);
-}
-
-
-.project-table tbody tr:not(.accordion-row):hover td {
+.project-table tbody tr:hover td {
 	background-color: var(--surface-variant);
 }
 
@@ -214,11 +207,6 @@
 	align-self: flex-start;
 }
 
-/* No separator between the project row and its expanded content */
-.project-table tbody tr.project-row.expanded td {
-	border-bottom: none !important;
-}
-
 .project-table tbody tr:last-child td {
 	border-bottom: none;
 }
@@ -228,40 +216,9 @@
 	vertical-align: middle;
 }
 
-.project-table td.col-expand {
-	padding: var(--space-4) var(--space-2);
-	width: 40px;
-	box-sizing: border-box;
-	text-align: center;
-}
-
-/* Show left accent only on the expand cell for the expanded row */
-.project-table tbody tr.project-row.expanded td.col-expand.center {
-	border-left: 2px solid var(--primary);
-}
-
-/* Prevent long “View Status Report …” text from bleeding into next columns on narrow screens */
+/* Prevent long "View Status Report …" text from bleeding into next columns on narrow screens */
 .project-table td.col-project {
 	overflow: hidden;
-}
-
-/* Expand Button */
-.expand-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	transition: background-color var(--transition-short);
-	
-	&:hover {
-		background-color: var(--surface-variant);
-	}
-	
-	&:active {
-		background-color: var(--outline-variant);
-	}
 }
 
 /* Project Column */
@@ -530,6 +487,161 @@ now-icon {
 
 .btn-secondary:hover {
 	background: var(--secondary-container);
+}
+
+/* ============================================
+   Project Detail View (page-swap)
+   ============================================ */
+.project-detail-view {
+	display: block;
+	overflow-x: hidden;
+	max-width: 100%;
+}
+
+.project-modal-top-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+.back-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: none;
+	border: none;
+	color: var(--primary);
+	font-size: var(--font-size-body-medium);
+	font-weight: var(--font-weight-medium);
+	cursor: pointer;
+	padding: 6px 2px;
+	border-radius: var(--radius-xs);
+	transition: background-color var(--transition-short);
+
+	&:hover {
+		background-color: var(--surface-variant);
+	}
+
+	now-icon {
+		color: currentColor;
+	}
+}
+
+.project-modal-header {
+	padding: 16px 24px;
+	border-bottom: 1px solid var(--outline-variant);
+	background: var(--surface);
+}
+
+.project-modal-header-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+}
+
+.project-modal-info {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.project-modal-identity {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	flex-wrap: wrap;
+}
+
+.project-modal-title {
+	font-size: var(--font-size-title-medium);
+	font-weight: var(--font-weight-semibold);
+	color: var(--on-surface);
+	line-height: var(--line-height-normal);
+}
+
+.project-modal-meta {
+	display: flex;
+	align-items: center;
+	gap: var(--space-4);
+	flex-wrap: wrap;
+	font-size: var(--font-size-body-small);
+	color: var(--on-surface-variant);
+}
+
+.project-modal-top-row .kpi-baseline-banner {
+	padding: 8px 16px;
+	font-size: var(--font-size-body-medium);
+	font-weight: var(--font-weight-semibold);
+	margin-bottom: 0;
+	width: auto;
+}
+
+.project-modal-kpis {
+	display: flex;
+	align-items: center;
+	gap: var(--space-8);
+	flex-shrink: 1;
+	flex-wrap: wrap;
+}
+
+.project-modal-kpi-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	min-width: 70px;
+}
+
+.project-modal-kpi-label {
+	font-size: 11px;
+	font-weight: var(--font-weight-medium);
+	color: var(--on-surface-variant);
+	text-align: center;
+	white-space: nowrap;
+}
+
+.project-modal-kpi-value {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.kpi-percent {
+	font-size: var(--font-size-body-medium);
+	font-weight: var(--font-weight-semibold);
+	color: var(--on-surface);
+}
+
+/* Tooltips inside modal KPIs: appear below, anchored left, constrained width */
+.project-modal-kpis .tooltip-wrapper .tooltip-content {
+	bottom: auto;
+	top: 100%;
+	left: 0;
+	transform: none;
+	margin-bottom: 0;
+	margin-top: 8px;
+	min-width: 200px;
+	max-width: 350px;
+}
+
+.project-modal-kpis .tooltip-wrapper .tooltip-content::after {
+	top: auto;
+	bottom: 100%;
+	left: 16px;
+	transform: none;
+	border-top-color: transparent;
+	border-bottom-color: #1f2937;
+}
+
+.project-modal-body {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
 }
 
 .status-report-row {
@@ -852,15 +964,6 @@ now-icon.status-create-icon:focus-visible {
 }
 
 /* Column Widths */
-.col-expand {
-	width: 40px !important;
-	min-width: 40px;
-	max-width: 40px;
-	flex-shrink: 0;
-	padding: var(--space-4) var(--space-2) !important;
-	text-align: center;
-}
-
 .col-project {
 	flex: 1;
 	min-width: 350px;
@@ -887,19 +990,6 @@ now-icon.status-create-icon:focus-visible {
 
 .col-effort {
 	width: 100px;
-}
-
-/* Accordion Styles - Modern Design */
-.accordion-row {
-	background-color: transparent;
-	
-	td {
-		padding: 0 !important;
-		border-left: none !important;
-		border-right: none !important;
-		border-top: none !important;
-		border-bottom: 1px solid var(--outline-variant) !important;
-	}
 }
 
 .accordion {
@@ -934,119 +1024,111 @@ now-icon.status-create-icon:focus-visible {
 .accordion-content {
 	display: flex;
 	flex-direction: column;
-	padding: 24px;
 	margin: 0;
 	overflow-x: hidden;
 	max-width: 100%;
 	background-color: transparent;
-	border-top: 0;
-	border-left: 2px solid var(--primary);
+}
 
-	/* === Modern table (drop-in) === */
-	.table-wrap {
-		width: 100%;
-		overflow: auto;
-		border: 1px solid var(--outline-variant);
-		border-radius: 14px;
-		background: var(--surface);
-		box-shadow: var(--shadow-1);
-	}
+/* === Modern table (drop-in) === */
+.table-wrap {
+	width: 100%;
+	overflow: auto;
+	border: 1px solid var(--outline-variant);
+	border-radius: 14px;
+	background: var(--surface);
+	box-shadow: var(--shadow-1);
+}
 
-	.table-modern {
-		width: 100%;
-		border-collapse: separate;
-		border-spacing: 0;
-		font-size: 14px;
-		line-height: 1.35;
-	}
+.table-modern {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	font-size: 14px;
+	line-height: 1.35;
+}
 
-	.table-modern thead th {
-		position: sticky;
-		top: 0;
-		z-index: 1;
+.table-modern thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	text-align: left;
+	font-weight: 600;
+	padding: 16px 18px !important;
+	line-height: 1.45 !important;
+	vertical-align: middle;
+	background: var(--surface-variant);
+	border-bottom: 1px solid var(--outline-variant);
+	color: var(--on-surface-variant);
+	white-space: nowrap;
+}
 
-		text-align: left;
-		font-weight: 600;
-		padding: 16px 18px !important;
-		line-height: 1.45 !important;
-		vertical-align: middle;
+.table-modern tbody td {
+	padding: 16px 18px !important;
+	line-height: 1.45 !important;
+	border-bottom: 1px solid var(--outline-variant) !important;
+	color: var(--on-surface);
+	white-space: normal !important;
+	vertical-align: middle;
+}
 
-		background: var(--surface-variant);
-		border-bottom: 1px solid var(--outline-variant);
-		color: var(--on-surface-variant);
-	}
+.table-modern tbody tr:nth-child(even) td {
+	background: transparent;
+}
 
-	.table-modern tbody td {
-		padding: 16px 18px !important;
-		line-height: 1.45 !important;
-		border-bottom: 1px solid var(--outline-variant) !important;
-		color: var(--on-surface);
-		white-space: normal !important;
-		vertical-align: middle;
-	}
+.table-modern tbody tr:hover td {
+	background: var(--surface-variant) !important;
+}
 
-	.table-modern tbody tr:nth-child(even) td {
-		background: transparent;
-	}
+.table-modern thead th:first-child {
+	border-top-left-radius: 14px;
+}
 
-	.table-modern tbody tr:hover td {
-		background: var(--surface-variant) !important;
-	}
+.table-modern thead th:last-child {
+	border-top-right-radius: 14px;
+}
 
-	.table-modern thead th:first-child {
-		border-top-left-radius: 14px;
-	}
+.table-modern tbody tr:last-child td:first-child {
+	border-bottom-left-radius: 14px;
+}
 
-	.table-modern thead th:last-child {
-		border-top-right-radius: 14px;
-	}
+.table-modern tbody tr:last-child td:last-child {
+	border-bottom-right-radius: 14px;
+}
 
-	.table-modern tbody tr:last-child td:first-child {
-		border-bottom-left-radius: 14px;
-	}
+.table-modern .num {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
 
-	.table-modern tbody tr:last-child td:last-child {
-		border-bottom-right-radius: 14px;
-	}
+.table-modern a {
+	color: inherit;
+	text-decoration: none;
+	border-bottom: 1px dashed var(--outline);
+}
 
-	.table-modern .num {
-		text-align: right;
-		font-variant-numeric: tabular-nums;
-	}
+.table-modern a:hover {
+	border-bottom-style: solid;
+}
 
-	.table-modern a {
-		color: inherit;
-		text-decoration: none;
-		border-bottom: 1px dashed var(--outline);
-	}
+.table-modern th.col-progress,
+.table-modern td.col-progress {
+	text-align: center;
+}
 
-	.table-modern a:hover {
-		border-bottom-style: solid;
-	}
+.table-modern td.col-progress {
+	padding-left: 10px;
+	padding-right: 10px;
+}
 
-	/* Progress columns only */
-	.table-modern th.col-progress,
-	.table-modern td.col-progress {
-		text-align: center;
-	}
+.table-modern .progress-text-label {
+	text-align: center;
+}
 
-	/* Optional: better visual balance */
-	.table-modern td.col-progress {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-
-	// Center progress bar labels used in detail tables
-	.progress-text-label {
-		text-align: center;
-	}
-
-	// Make progress bars narrower inside accordion tables
-	.progress-full-width {
-		width: 80%;
-		margin-left: auto;
-		margin-right: auto;
-	}
+.table-modern .progress-full-width {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 /* Tabs Styles - Modern Design */
@@ -1247,26 +1329,6 @@ now-icon.status-create-icon:focus-visible {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-	max-height: 600px;
-	overflow-y: auto;
-	overflow-x: hidden;
-
-	&::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	&::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background: #d1d5db;
-		border-radius: 3px;
-
-		&:hover {
-			background: #9ca3af;
-		}
-	}
 }
 
 /* Banner shown at top of Details tab */

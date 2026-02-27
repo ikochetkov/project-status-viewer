@@ -241,6 +241,6 @@ For additional help or detailed information:
 
 ---
 
-**Version:** 1.0  
-**Last Updated:** January 2026  
+**Version:** 1.1
+**Last Updated:** February 2026
 **Component:** Mobiz Project Status Viewer v0.0.1

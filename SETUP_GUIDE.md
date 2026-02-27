@@ -30,7 +30,7 @@ src/
     │   ├── renderHelpers.js              # Render utilities
     │   └── sorting.js                    # Sorting logic
     ├── tabs/
-    │   ├── accordion.js                  # Tab container
+    │   ├── projectDetailView.js          # Project detail view (page-swap with tabs)
     │   ├── detailsTab.js                 # Details tab
     │   ├── milestonesTab.js              # Milestones table
     │   ├── issuesTab.js                  # Issues table
@@ -73,7 +73,7 @@ Edit `example/mockData.js` to change the local dev data. The `example/` director
 
 ### Configure your instance
 ```bash
-snc configure
+snc configure profile set
 ```
 
 ### Pre-deployment checklist

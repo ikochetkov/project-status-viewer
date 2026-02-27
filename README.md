@@ -44,7 +44,7 @@ src/
     │   ├── renderHelpers.js              # JSX render utilities
     │   └── sorting.js                    # Sorting logic
     ├── tabs/
-    │   ├── accordion.js                  # Tab container + sort/filter
+    │   ├── projectDetailView.js          # Project detail view (page-swap with tabs)
     │   ├── detailsTab.js                 # Details tab
     │   ├── milestonesTab.js              # Milestones table
     │   ├── issuesTab.js                  # Issues table
@@ -81,6 +81,7 @@ The `example/` directory is **only used locally** — it is NOT included in the 
 ### Deployment
 
 ```bash
+snc configure profile set   # one-time: configure target instance
 snc ui-component deploy
 ```
 

@@ -11,9 +11,6 @@ export const renderDetailsTab = (project) => {
 
 	return (
 		<div className="tab-content details-content">
-			<div className="kpi-baseline-banner" role="note" aria-live="polite">
-				Any changes to the baseline KPIs require an approved CR
-			</div>
 			<div className="details-layout">
 				<div className="details-left">
 					<div className="section">
@@ -146,6 +143,11 @@ export const renderDetailsTab = (project) => {
 						<div className="effort-divider"></div>
 
 						<div className="effort-bars">
+							{renderProgressBar(
+								project.percentComplete,
+								'Percent Complete',
+								'Project completion percentage'
+							)}
 							{renderProgressBar(
 								project.effortUtilized,
 								'Effort Utilized',
